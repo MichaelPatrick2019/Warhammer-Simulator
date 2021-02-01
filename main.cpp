@@ -37,10 +37,19 @@ int main()
       cin >> stats;
       character.setStats(stats);
 
+      cout << "Please enter your character's psychic abilities. If your";
+      cout << "character is not a psyker," << endl;
+      cout << "please enter 'none' instead.";
+      cout << "[Name]";
+
+      string psychic;
+      cin >> psychic;
+      character.setPsychic(psychic);
+
       cout << "Please enter your character's ranged weapons. If your";
       cout << "character doesn't have any ranged attacks," << endl;
       cout << "please enter 'none' instead.";
-      cout << "[Range] [Type] [number of attacks] [S] [AP] [Abilities]";
+      cout << "[Name] [Range] [Type] [number of attacks] [S] [AP] [Abilities]";
 
       string ranged;
       cin >> ranged;
@@ -49,11 +58,13 @@ int main()
       cout << "Please enter your character's melee weapons. If your";
       cout << "character doesn't have any ranged attacks," << endl;
       cout << "please enter 'none' instead";
-      cout << "[S] [AP] [D] [Abilities]";
+      cout << "[Name] [S] [AP] [D] [Abilities]";
 
       string melee;
       cin >> ranged;
       character.setMelee(melee);
+
+      personalArmy.add(character);
 
       cout << "Do you have another character to add? Please respond" <<
          "'Y' or 'N'";
