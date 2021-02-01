@@ -156,4 +156,16 @@ public:
    of their morale test. Outputs simulated dice rolls to
    the output. */
    void moraleTest();
+
+   /**Overloaded output operator that displays the name, stats,
+   psychic abilities, ranged abilities, and melee abilities of the unit
+   to the output stream. 
+
+   "os" is the output stream.
+   "character" is the passed Character object whose data is to be
+   output.
+   
+   Precondition: None.
+   Postcondition: Outputs series of strings to the output stream.*/
+   friend ostream& operator<<(ostream& os, const Character& character);
 };
