@@ -13,18 +13,36 @@ engaging in combat with other characters. */
 
 using namespace std;
 
+const int NUM_STATS = 9;
+
 class Character
 {
 private:
-   string name;
-   int stats[9]; //Array of ints of inherent stats.
-   bool psyker; //Does the character manifest psychic abilities?
+   string name_;
+   int stats_[NUM_STATS]{ }; //Array of ints of inherent stats.
+   bool psyker_; //Does the character manifest psychic abilities?
 
    //Unknown number of weapons...
-   vector<string[6]> rangedWeapons; //Must account for certain keywords
-   vector<string[4]> melee; //Also has special keywords that are input as strings
-
+   vector<string[6]> rangedWeapons_; //Must account for certain keywords
+   vector<string[4]> melee_; //Also has special keywords that are input as
+   //strings
 public:
+
+   //Make me private please!
+   /** Basic function that splits a string by a certain delimiter and returns
+   a string array.
+   
+   "delimiter" is a string used as a delimiter.
+   "str" is the string to be broken up.
+
+   Precondition: None.
+   Postcondition: Returns a pointer to a string vector,
+   broken up by the given delimiter.
+   The calling function must delete the dynamically allocated vector.
+   */
+   vector<string>* split(string delimiter, string str);
+
+
 
    /** Default constructor for a character. Doesn't need to have anything allocated
    at the start. Defaults all fields to default values.
