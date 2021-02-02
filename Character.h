@@ -13,7 +13,7 @@ engaging in combat with other characters. */
 
 using namespace std;
 
-const int NUM_STATS = 9;
+const int NUM_STATS = 10;
 
 class Character
 {
@@ -21,6 +21,8 @@ private:
    string name_;
    int stats_[NUM_STATS]{ }; //Array of ints of inherent stats.
    bool psyker_; //Does the character manifest psychic abilities?
+
+   vector<string> psychicAbilities_; //Need to think about how you want this done...
 
    //Unknown number of weapons...
    vector<string[6]> rangedWeapons_; //Must account for certain keywords
@@ -64,7 +66,10 @@ public:
    
    "input" is a string in a specified format...
    
-   [M] [WS] [BS] [S] [T] [W] [A] [Ld] [Sv]
+   [M] [WS] [BS] [S] [T] [W] [A] [Ld] [Armor Sv] [Invuln Sv]
+
+   If your character doesn't have a save, enter 0 for that value.
+   Rolls will be calculated based on whichever is higher.
 
    Precondition: The string must observe the correct format.
    Postcondition: The stats are stored in the character. Returns

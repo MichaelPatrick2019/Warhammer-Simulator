@@ -42,14 +42,29 @@ bool Character::setName(string input)
 
 "input" is a string in a specified format...
 
-[M] [WS] [BS] [S] [T] [W] [A] [Ld] [Sv]
+[M] [WS] [BS] [S] [T] [W] [A] [Ld] [Armor Sv] [Invuln Sv]
+
+If your character doesn't have a save, enter 0 for that value.
+Rolls will be calculated based on whichever is higher.
 
 Precondition: The string must observe the correct format.
 Postcondition: The stats are stored in the character. Returns
 true if succesful. */
 bool Character::setStats(string input)
 {
-   //Code??
+   vector<string>* statList = split(" ", input);
+
+   //For everything except armor saves
+   for (int i = 0; i < NUM_STATS; i++) {
+      stats_[i] = stoi(statList->at(i));
+   }
+
+   //Edge case for armor / invuln saves of format
+   //3+, 4++
+   //If there's an Armor & Invuln save
+
+   delete statList;
+
    return true;
 }
 
@@ -98,4 +113,33 @@ vector<string>* Character::split(string delimiter, string str)
    }
 
    return result;
+}
+
+
+/**Overloaded output operator that displays the name, stats,
+psychic abilities, ranged abilities, and melee abilities of the unit
+to the output stream.
+
+"os" is the output stream.
+"character" is the passed Character object whose data is to be
+output.
+
+Precondition: None.
+Postcondition: Outputs series of strings to the output stream.*/
+ostream& operator<<(ostream& os, const Character& character)
+{
+   os << character.name_ << " " << endl;
+   for (int i = 0; i < NUM_STATS; i++) {
+      os << character.stats_[i] << " ";
+   }
+   os << endl;
+
+
+   //Psychic abilities?????
+
+   //Ranged Weapons
+   
+   //Melee Weapons
+
+   return os;
 }
