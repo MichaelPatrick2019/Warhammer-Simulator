@@ -54,14 +54,9 @@ bool Character::setStats(string input)
 {
    vector<string>* statList = split(" ", input);
 
-   //For everything except armor saves
    for (int i = 0; i < NUM_STATS; i++) {
       stats_[i] = stoi(statList->at(i));
    }
-
-   //Edge case for armor / invuln saves of format
-   //3+, 4++
-   //If there's an Armor & Invuln save
 
    delete statList;
 
