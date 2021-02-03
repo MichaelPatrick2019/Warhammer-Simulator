@@ -14,6 +14,7 @@ engaging in combat with other characters. */
 using namespace std;
 
 const int NUM_STATS = 10;
+const int NUM_RANGED = 7;
 
 class Character
 {
@@ -25,7 +26,8 @@ private:
    vector<string> psychicAbilities_; //Need to think about how you want this done...
 
    //Unknown number of weapons...
-   vector<string[6]> rangedWeapons_; //Must account for certain keywords
+   //Destructor has to manage this dynamically allocated memory!
+   vector<vector<string>*> rangedWeapons_; //Must account for certain keywords
    vector<string[4]> melee_; //Also has special keywords that are input as
    //strings
 public:

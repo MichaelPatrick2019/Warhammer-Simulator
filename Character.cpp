@@ -10,7 +10,7 @@ engaging in combat with other characters. */
 #include <string>
 #include <iostream>
 #include <vector>
-#include "Character.h";
+#include "Character.h"
 
 using namespace std;
 
@@ -110,6 +110,33 @@ vector<string>* Character::split(string delimiter, string str)
    return result;
 }
 
+/** Adds a weapon to the collection of ranged weapons. Characters
+may have multiple ranged weapons.
+
+"input" is a string formatted to represent a ranged weapon...
+
+[Name] [Range] [Type] [number of attacks] [S] [AP] [Abilities]
+
+Precondition: The input string must adhere to the above format.
+Postcondition: The ranged weapon is added, and will be used to calculate
+ranged damage output in combat. Returns true if succesful. */
+bool Character::setRanged(string input)
+{
+   vector<string>* rangedSplit = split(" ", input);
+
+   vector<string>* singleWeapon = new vector<string>;
+
+   for (int i = 0; i < NUM_RANGED; i++) {
+      singleWeapon->push_back(rangedSplit->at(i));
+   }
+
+   rangedWeapons_.push_back(singleWeapon);
+
+   delete rangedSplit;
+
+   return true;
+}
+
 
 /**Overloaded output operator that displays the name, stats,
 psychic abilities, ranged abilities, and melee abilities of the unit
@@ -132,7 +159,14 @@ ostream& operator<<(ostream& os, const Character& character)
 
    //Psychic abilities?????
 
-   //Ranged Weapons
+   for (int i = 0; i < character.rangedWeapons_.size(); i++) {
+      //Should be numranged, set to -1 for testing?
+      for (int j = 0; j < NUM_RANGED; j++) {
+         vector<string>* givenWeapon = character.rangedWeapons_[i];
+         os << givenWeapon->at(j) << " ";
+      }
+      os << endl;
+   }
    
    //Melee Weapons
 

@@ -29,5 +29,7 @@ int main()
    character.setName("John Krasinski");
    character.setStats("11 4 5 4 4 4 6 10 3 5");
 
+   character.setRanged("Bolter 18 Assault D6 4 -1 None");
+
    cout << character;
 }
