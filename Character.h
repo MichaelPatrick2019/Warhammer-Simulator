@@ -15,6 +15,7 @@ using namespace std;
 
 const int NUM_STATS = 10;
 const int NUM_RANGED = 7;
+const int NUM_MELEE = 5;
 
 class Character
 {
@@ -28,8 +29,18 @@ private:
    //Unknown number of weapons...
    //Destructor has to manage this dynamically allocated memory!
    vector<vector<string>*> rangedWeapons_; //Must account for certain keywords
-   vector<string[4]> melee_; //Also has special keywords that are input as
+   vector<vector<string>*> melee_; //Also has special keywords that are input as
    //strings
+
+   /** Private helper function that creates a vector and pushes it
+   to the appropriate data field.
+   
+   Precondition: Only works in relation to extant data fields, so the
+   sizeOfWeaponData should be either NUM_STATS, NUM_RANGED, or NUM_MELEE.
+   Postcondition: Adds a weapon to the rangedWeapons or melee field vectors.
+   Returns true if succesful. */
+   bool setWeapon(string input, int sizeOfWeaponData);
+
 public:
 
    //Make me private please!

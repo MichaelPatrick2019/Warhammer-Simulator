@@ -122,19 +122,53 @@ Postcondition: The ranged weapon is added, and will be used to calculate
 ranged damage output in combat. Returns true if succesful. */
 bool Character::setRanged(string input)
 {
+   return setWeapon(input, NUM_RANGED);
+}
+
+/** Private helper function that creates a vector and pushes it
+to the appropriate data field.
+
+Precondition: Only works in relation to extant data fields.
+Postcondition: Adds a weapon to the rangedWeapons or melee field vectors.
+Returns true if succesful. */
+bool Character::setWeapon(string input, int sizeOfWeaponData) {
    vector<string>* rangedSplit = split(" ", input);
 
    vector<string>* singleWeapon = new vector<string>;
 
-   for (int i = 0; i < NUM_RANGED; i++) {
+   for (int i = 0; i < sizeOfWeaponData; i++) {
       singleWeapon->push_back(rangedSplit->at(i));
    }
 
-   rangedWeapons_.push_back(singleWeapon);
+   if (sizeOfWeaponData == NUM_RANGED) {
+      rangedWeapons_.push_back(singleWeapon);
+   }
+   else { //If it's not a ranged weapon, it's melee.
+      melee_.push_back(singleWeapon);
+   }
 
    delete rangedSplit;
 
    return true;
+}
+
+
+/** Adds a melee weapon to the collection of ranged weapons. Characters
+may have multiple melee weapons they can choose from in melee combat.
+Accounts for the special case of certain melee weapons that are used to
+provide additional attacks alongside other melee weapons.
+
+"input" is a string formatted to represent a melee weapon.
+
+[Name] [S] [AP] [D] [Abilities]
+
+Precondition: The input string must adhere to the above format.
+Postcondition: The melee weapon is added, and will be referenced when
+offering players the option of melee weapon they would like to use in
+combat. Returns true if succesful. */
+bool Character::setMelee(string input)
+{
+   return setWeapon(input, NUM_MELEE);
 }
 
 
@@ -159,16 +193,23 @@ ostream& operator<<(ostream& os, const Character& character)
 
    //Psychic abilities?????
 
+   //Ranged Weapons
    for (int i = 0; i < character.rangedWeapons_.size(); i++) {
-      //Should be numranged, set to -1 for testing?
       for (int j = 0; j < NUM_RANGED; j++) {
-         vector<string>* givenWeapon = character.rangedWeapons_[i];
-         os << givenWeapon->at(j) << " ";
+         vector<string>* ranged = character.rangedWeapons_[i];
+         os << ranged->at(j) << " ";
       }
       os << endl;
    }
    
    //Melee Weapons
+   for (int i = 0; i < character.melee_.size(); i++) {
+      for (int j = 0; j < NUM_MELEE; j++) {
+         vector<string>* melee = character.melee_[i];
+         os << melee->at(j) << " ";
+      }
+      os << endl;
+   }
 
    return os;
 }
