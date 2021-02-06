@@ -171,6 +171,36 @@ bool Character::setMelee(string input)
    return setWeapon(input, NUM_MELEE);
 }
 
+/** Sets the psychic abilities of the unit if the unit is a psyker.
+* References the psychic ability from a database.
+
+"input" is the name of any number of psychic abilities as a string.
+Separate abilities by a space...
+[Psychic Ability 1] [Psychic Ability 2] ...
+
+Precondition: None.
+Postcondition: The psychic ability is added to the given character
+for potential use during the psychic phase. Returns true if the
+added ability is valid, and labels the character as a psyker.
+If it's not, returns false, and doesn't
+add the psychic ability to the character. */
+bool Character::setPsychic(string input)
+{
+   vector<string>* psychicSplit = split(" ", input);
+
+   for (int i = 0; i < psychicSplit->size(); i++) {
+      //Call string copy constructor on values in psychicSplit()
+      string* temp = new string(psychicSplit->at(i));
+
+      //Push to vector field
+      psychicAbilities_.push_back(temp);
+   }
+
+   delete psychicSplit;
+
+   return true;
+}
+
 
 /**Overloaded output operator that displays the name, stats,
 psychic abilities, ranged abilities, and melee abilities of the unit
@@ -190,10 +220,15 @@ ostream& operator<<(ostream& os, const Character& character)
    }
    os << endl;
 
-
-   //Psychic abilities?????
+   //Psychic Abilities
+   for (int i = 0; i < character.psychicAbilities_.size(); i++) {
+      os << *character.psychicAbilities_[i] << " ";
+   }
+   os << endl;
 
    //Ranged Weapons
+   // You should be able to refactor me since same code is used
+   // for rangedWeapons_ and melee_.
    for (int i = 0; i < character.rangedWeapons_.size(); i++) {
       for (int j = 0; j < NUM_RANGED; j++) {
          vector<string>* ranged = character.rangedWeapons_[i];

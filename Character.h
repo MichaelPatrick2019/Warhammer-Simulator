@@ -24,7 +24,8 @@ private:
    int stats_[NUM_STATS]{ }; //Array of ints of inherent stats.
    bool psyker_; //Does the character manifest psychic abilities?
 
-   vector<string> psychicAbilities_; //Need to think about how you want this done...
+   vector<string*> psychicAbilities_; //Store as list of strings
+                                      //of abilities
 
    //Unknown number of weapons...
    //Destructor has to manage this dynamically allocated memory!
@@ -65,6 +66,11 @@ public:
    Precondition: None.
    Postcondition: A Character object is created. */
    Character();
+
+   /** Needs to manage all of the dynamically allocated memory in
+   psychicAbilities_, rangedWeapons_, and melee_ */
+   //Implement me!!!
+   //~Character();
 
    /** Sets the name of the character to the provided input.
    
@@ -119,7 +125,9 @@ public:
    /** Sets the psychic abilities of the unit if the unit is a psyker.
    * References the psychic ability from a database.
    
-   "input" is the name of the psychic ability as a string.
+   "input" is the name of any number of psychic abilities as a string.
+   Separate abilities by a space...
+   [Psychic Ability 1] [Psychic Ability 2] ...
 
    Precondition: None.
    Postcondition: The psychic ability is added to the given character

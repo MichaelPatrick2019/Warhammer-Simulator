@@ -31,6 +31,7 @@ int main()
 
    character.setRanged("Bolter 18 Assault D6 4 -1 None");
    character.setMelee("Claws User 0 2 None");
+   character.setPsychic("Smite Catalyst");
 
    cout << character;
 }
