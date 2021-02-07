@@ -23,6 +23,42 @@ Character::Character()
 {
    name_ = "[Unnamed]";
    psyker_ = false;
+
+}
+
+/** Needs to manage all of the dynamically allocated memory in
+psychicAbilities_, rangedWeapons_, and melee_ */
+//Check in linux first...
+//Implement me!!!
+Character::~Character()
+{
+   //Delete string pointers in psychicAbilities_
+   for (string* ptr : psychicAbilities_) {
+      delete ptr;
+   }
+
+   //Delete vector of vectors in rangedWeapons_
+   deleteVectorOfVectors(rangedWeapons_);
+
+   //Delete vector of vectors in melee_
+   deleteVectorOfVectors(melee_);
+}
+
+//Make me private!!!
+/** Private helper function that takes a given vector full of
+vector pointers and fully deletes them.
+
+Precondition: Passed object must be a vector of pointers to
+string vectors.
+Postcondition: All dynamically allocated memory stored in the
+passed vector is deleted. */
+void Character::deleteVectorOfVectors(vector<vector<string>*>& toDelete)
+{
+   for (vector<string>* dynamicVector : toDelete) {
+      delete dynamicVector;
+   }
+
+   toDelete.clear();
 }
 
 /** Sets the name of the character to the provided input.
