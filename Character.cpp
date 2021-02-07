@@ -1,5 +1,3 @@
-#pragma once
-
 /** @ Character.h */
 
 /** Straightforward object that stores all of the necessary information
@@ -28,8 +26,6 @@ Character::Character()
 
 /** Needs to manage all of the dynamically allocated memory in
 psychicAbilities_, rangedWeapons_, and melee_ */
-//Check in linux first...
-//Implement me!!!
 Character::~Character()
 {
    //Delete string pointers in psychicAbilities_
