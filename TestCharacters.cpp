@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "Character.h";
+#include "Character.h"
 #include <assert.h>
 
 
