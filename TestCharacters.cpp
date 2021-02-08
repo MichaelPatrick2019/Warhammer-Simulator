@@ -34,4 +34,18 @@ int main()
    character.setPsychic("Smite Catalyst");
 
    cout << character;
+
+   Character charTwo;
+   charTwo.setName("Zebra");
+
+   string zebra = "Zebra";
+   string john = "John Krasinski";
+
+   if (zebra.compare(john) < 0) {
+      cout << "zebra less than john";
+   }
+   else {
+      cout << "john is less than zebra";
+   }
+   cout << endl;
 }
