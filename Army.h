@@ -87,6 +87,18 @@ public:
    Postcondition: Modifies the tree so it remains as balanced as possible. */
    void rotate(Node* node); //AVL tree...
 
+   /** For when the tree needs rotate twice to fix the tree.
+   For left-right, or right-left additions to a node that make it
+   unbalanced (left subtree height differs from right subtree by more than
+   one.
+   
+   "needsRotating" is a Character* pointer.
+
+   Precondition: None? (Check directionality)
+   Postcondition: Arranges tree so is still an AVL tree, and minimizes height.
+   */
+   void rotateTwice(Character*& needsRotating);
+
    /** Returns the number of Characters in the Army.
    
    Precondition: None.
@@ -102,6 +114,5 @@ public:
    Outputs a string saying the Army is empty if there are no characters
    added. */
    friend ostream& operator<<(ostream& os, const Army& army);
-
 };
 
