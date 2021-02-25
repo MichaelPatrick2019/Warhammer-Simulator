@@ -1,7 +1,9 @@
 #pragma once
-
 /** @Army.h */
-/** Army class that stores multiple Character objects
+/** 
+Michael Patrick
+
+Army class that stores multiple Character objects
 in a AVL tree. Intended to provide quick
 access to characters sorted by name. */
 
@@ -15,15 +17,45 @@ private:
 
    struct Node
    {
-      Character character;
+      Character* character;
       Node* left;
       Node* right;
+      int height; //Default 1, because node is always initially a leaf
+      
+      /** Node constructor that assigns the node a Character value. 
+      Precondition: None.
+      Postcondition: Assigns the character pointer, and sets left and
+      right pointers to nullptr. */
+      Node(Character* character);
    };
+
+   /** Quick function that returns max of two integers */
+   int max(int a, int b);
+
+   /** Determines height of the given node... */
+   int height(Node* node);
+
+
+   /** Private helper method for recursively adding a node
+   to the AVL tree.
+   
+   Precondition: None.
+   Postcondition: Returns the root of the subtree the value
+   is added into. Once recursion
+   terminates, the node is added to the correct location on
+   the tree */
+   Node* insert(Node* node, Character* key);
+
+   /** Checks the level of balance of the given node.
+   
+   Precondition: None.
+   Postcondition: Returns an int representing the difference
+   in height between both subtrees of the node. If the difference
+   is greater than 1, the tree is considered unbalanced. */
+   int getBalance(Node* node);
 
    Node* root;
    int size;
-
-
 
 public:
 
@@ -78,32 +110,65 @@ public:
    to garbage. */
    Character* retrieve(string name); //Get Character ptr by name
 
-   /** Rotates the inner tree impementation to keep it as balanced
-   as possible.
-   
-   "node" is a node pointer to a node in the AVL tree. 
+   /** Rotates the unbalanced node with its left child.
 
-   Precondition: None.
-   Postcondition: Modifies the tree so it remains as balanced as possible. */
-   void rotate(Node* node); //AVL tree...
+   "node" is the unbalanced node passed by reference.
 
-   /** For when the tree needs rotate twice to fix the tree.
-   For left-right, or right-left additions to a node that make it
-   unbalanced (left subtree height differs from right subtree by more than
-   one.
-   
-   "needsRotating" is a Character* pointer.
+   Precondition: Assumes that it is true that the node needs
+   to be rotated in order to maintain the balance of the tree.
+   Will not verify this before performing the operation.
+   Postcondition: The given node now points to the left
+   node, and the right child of the node is passed to
+   the original node. */
+   Node* rotateWithLeftChild(Node*& node);
 
-   Precondition: None? (Check directionality)
-   Postcondition: Arranges tree so is still an AVL tree, and minimizes height.
-   */
-   void rotateTwice(Character*& needsRotating);
+   /** Rotates the unbalanced node with its right child.
+
+   "node" is the unbalanced node passed by reference.
+
+   Precondition: Assumes that it is true that the node needs
+   to be rotated in order to maintain the balance of the tree.
+   Will not verify this before performing the operation.
+   Postcondition: The given node now points to the right
+   node, and the left child of the node is passed to
+   the original node. */
+   Node* rotateWithRightChild(Node*& node);
+
+   /** Rotates the current node with the left child of
+   the right child of the passed node. Used for when
+   the added node that unbalances the passed node is
+   in the left subtree of the right child.
+
+   "node" is the unbalanced node passed by reference.
+
+   Precondition: Assumes the passed node is unbalanced, and
+   will become balanced once the method is finished. Does
+   not verify a height inbalance, or that this is in fact
+   the correct method call.
+   Postcondition: Switches the passed node with the left
+   child of the right child of the original node. */
+   void doubleRotateWithLeftChild(Node*& node);
+
+   /** Rotates the current node with the right child of
+   the left child of the passed node. Used for when
+   the added node that unbalances the passed node is
+   in the right subtree of the left child.
+
+   "node" is the unbalanced node passed by reference.
+
+   Precondition: Assumes the passed node is unbalanced, and
+   will become balanced once the method is finished. Does
+   not verify a height inbalance, or that this is in fact
+   the correct method call.
+   Postcondition: Switches the passed node with the right
+   child of the left child of the original node. */
+   void doubleRotateWithRightChild(Node*& node);
 
    /** Returns the number of Characters in the Army.
    
    Precondition: None.
    Postcondition: Returns the number of Characters as an int. */
-   int size(); //Return size
+   int numCharacters(); //Return size
 
    /** Overloaded output operator. Details all of the characters
    in the army, including all their names, statistics, weapons,
