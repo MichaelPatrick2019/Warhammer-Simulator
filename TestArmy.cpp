@@ -48,5 +48,9 @@ int main()
    army.add(third);
    army.add(fourth);
 
-   army.toString();
+   cout << army << endl;
+
+   cout << "Army size: ";
+   cout << army.numCharacters() << endl;
+
 }

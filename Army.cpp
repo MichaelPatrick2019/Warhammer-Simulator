@@ -24,6 +24,29 @@ Army::Army() : root(nullptr), size(0)
 {
 }
 
+/** Private recursive helper method for the destructor. Deletes
+ *  the given node any all of its children.
+ *  node is the root of any subtree.
+ *  Precondition: Requires a tree object.
+ *  Postcondition: Deletes all nodes of the tree stored in dynamic
+ *  memory. */
+void Army::deleteNodes(Node* node)
+{
+   if (node == nullptr) {
+      return;
+   }
+
+   deleteNodes(node->left);
+   deleteNodes(node->right);
+
+   //Makes sure there aren't any pointers pointing to garbage.
+   node->left = nullptr;
+   node->right = nullptr;
+
+   delete node->character;
+   delete node;
+}
+
 /** Custom destructor that handles all of the
 dynamically allocated memory in the Army object.
 
@@ -31,9 +54,13 @@ Precondition: None.
 Postcondition: Destroys all data associated with the
 Army object. Takes responsibility for any character
 pointers added. This means you won't be able to access
-a character once the Army it is in is deleted. */
+a character once the Army it is in is deleted.
+
+Also assumes this will only be called once on the
+Army object.*/
 Army::~Army()
 {
+   deleteNodes(root);
 }
 
 /** Outputs the BST using inorder search.
@@ -216,4 +243,44 @@ Army::Node* Army::rotateWithRightChild(Node* node)
       height(rightChild->right)) + 1;
 
    return rightChild;
+}
+
+/** Returns the number of Characters in the Army.
+
+Precondition: None.
+Postcondition: Returns the number of Characters as an int. */
+int Army::numCharacters()
+{
+   return size;
+}
+
+/** Overloaded output operator. Details all of the characters
+in the army, including all their names, statistics, weapons,
+and psychic abilities.
+
+Precondition: None.
+Postcondition: Outputs all of the Character data to the outstream.
+Outputs a string saying the Army is empty if there are no characters
+added. */
+ostream& operator<<(ostream& os, const Army& army)
+{ 
+   sendSubTreeToOut(os, army, army.root);
+   return os;
+}
+
+/** Private recursive method for output operator.
+Takes a node and an army object and outputs all characters
+using inorder traversal.
+
+Precondition: None.
+Postcondition: Sends all strings to outstream. */
+void sendSubTreeToOut(ostream& os, const Army& army, Army::Node* node)
+{
+   if (node == nullptr) {
+      return;
+   }
+
+   sendSubTreeToOut(os, army, node->left);
+   os << *node->character << endl;
+   sendSubTreeToOut(os, army, node->right);
 }

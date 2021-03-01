@@ -35,7 +35,6 @@ private:
    /** Determines height of the given node... */
    int height(Node* node);
 
-
    /** Private helper method for recursively adding a node
    to the AVL tree.
    
@@ -61,6 +60,22 @@ private:
    Precondition: None.
    Postcondition: Sends Character << operator to output. */
    void toString(Node* root);
+
+   /** Private recursive helper method for the destructor. Deletes
+ *  the given node any all of its children.
+ *  node is the root of any subtree.
+ *  Precondition: Requires a tree object.
+ *  Postcondition: Deletes all nodes of the tree stored in dynamic
+ *  memory. */
+   void deleteNodes(Node* node);
+
+   /** Private recursive method for output operator.
+   Takes a node and an army object and outputs all characters
+   using inorder traversal.
+
+   Precondition: None.
+   Postcondition: Sends all strings to outstream. */
+   friend void sendSubTreeToOut(ostream& os, const Army& army, Army::Node* node);
 
    Node* root;
    int size;
@@ -94,7 +109,10 @@ public:
    Postcondition: Destroys all data associated with the
    Army object. Takes responsibility for any character
    pointers added. This means you won't be able to access
-   a character once the Army it is in is deleted. */
+   a character once the Army it is in is deleted. 
+   
+   Also assumes this will only be called once on the
+   Army object.*/
    ~Army();
 
 
@@ -152,36 +170,6 @@ public:
    the original node. */
    Node* rotateWithRightChild(Node* node);
 
-   /** Rotates the current node with the left child of
-   the right child of the passed node. Used for when
-   the added node that unbalances the passed node is
-   in the left subtree of the right child.
-
-   "node" is the unbalanced node passed by reference.
-
-   Precondition: Assumes the passed node is unbalanced, and
-   will become balanced once the method is finished. Does
-   not verify a height inbalance, or that this is in fact
-   the correct method call.
-   Postcondition: Switches the passed node with the left
-   child of the right child of the original node. */
-   void doubleRotateWithLeftChild(Node*& node);
-
-   /** Rotates the current node with the right child of
-   the left child of the passed node. Used for when
-   the added node that unbalances the passed node is
-   in the right subtree of the left child.
-
-   "node" is the unbalanced node passed by reference.
-
-   Precondition: Assumes the passed node is unbalanced, and
-   will become balanced once the method is finished. Does
-   not verify a height inbalance, or that this is in fact
-   the correct method call.
-   Postcondition: Switches the passed node with the right
-   child of the left child of the original node. */
-   void doubleRotateWithRightChild(Node*& node);
-
    /** Returns the number of Characters in the Army.
    
    Precondition: None.
@@ -197,5 +185,6 @@ public:
    Outputs a string saying the Army is empty if there are no characters
    added. */
    friend ostream& operator<<(ostream& os, const Army& army);
+
 };
 
