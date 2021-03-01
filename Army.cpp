@@ -24,6 +24,40 @@ Army::Army() : root(nullptr), size(0)
 {
 }
 
+/** Custom destructor that handles all of the
+dynamically allocated memory in the Army object.
+
+Precondition: None.
+Postcondition: Destroys all data associated with the
+Army object. Takes responsibility for any character
+pointers added. This means you won't be able to access
+a character once the Army it is in is deleted. */
+Army::~Army()
+{
+}
+
+/** Outputs the BST using inorder search.
+
+"node" is the root of any subtree. 
+
+Precondition: None.
+Postcondition: Sends Character << operator to output. */
+void Army::toString(Node* node)
+{
+   if (node == nullptr) {
+      return;
+   }
+
+   toString(node->left);
+   cout << *node->character << endl;
+   toString(node->right);
+}
+
+void Army::toString()
+{
+   toString(root);
+}
+
 
 /** Adds a Character to the Army.
 
@@ -36,10 +70,9 @@ Postcondition: Adds the Character pointer to the
 Army. Takes responsibility for the Character's data. */
 bool Army::add(Character* newChar)
 {
-   if (root == nullptr) root = new Node(newChar);
-   else {
-      insert(root, newChar);
-   }
+   root = insert(root, newChar);
+
+   size++;
    return true;
 }
 
@@ -55,10 +88,11 @@ Army::Node* Army::insert(Node* node, Character* key)
 {
    //Standard insertion
    if (node == nullptr) return new Node(key);
-   if (key < node->character) {
+   if (*key < *node->character) { //Don't comapre addresses!
+      cout << "key < node..." << endl;
       node->left = insert(node->left, key);
    }
-   else if (key > node->character) {
+   else if (*key > *node->character) {
       node->right = insert(node->right, key);
    }
    else {
@@ -76,30 +110,33 @@ Army::Node* Army::insert(Node* node, Character* key)
    //4 cases, depending on balance...
 
    //Left-left
-   if (balance > 1 && key < node->left->character) {
-      return rotateWithRightChild(node);
+   if (balance > 1 && *key < *node->left->character) { //Balance prevents
+                                                       //bad references
+      return rotateWithLeftChild(node);
    }
 
    //Right-right
-   if (balance < -1 && key < node->left->character) {
-      return rotateWithLeftChild(node);
-   }
-
-   //Left-Right
-   if (balance > 1 && key > node->left->character){
-      node->left = rotateWithLeftChild(node->left);
+   if (balance < -1 && *key > *node->right->character) {
       return rotateWithRightChild(node);
    }
 
-   //Right-left
-   if (balance < -1 && key < node->right->character) {
-      node->right = rotateWithRightChild(node->right);
+   //Left-Right
+   if (balance > 1 && *key > *node->left->character){
+      node->left = rotateWithRightChild(node->left);
       return rotateWithLeftChild(node);
    }
+
+   //Right-left
+   if (balance < -1 && *key < *node->right->character) {
+      node->right = rotateWithLeftChild(node->right);
+      return rotateWithRightChild(node);
+   }
+
+   return node;
 }
 
 /** Quick function that returns max of two integers */
-int max(int a, int b)
+int Army::max(int a, int b)
 {
    //Ternary operator - if a > b, return a, else return b
    return (a > b) ? a : b;
@@ -134,20 +171,22 @@ Will not verify this before performing the operation.
 Postcondition: The given node now points to the left
 node, and the right child of the node is passed to
 the original node. Returns the new, higher node...*/
-Army::Node* Army::rotateWithLeftChild(Node*& node)
+Army::Node* Army::rotateWithLeftChild(Node* node)
 {
    Node* leftChild = node->left;
-   node->left = leftChild->right;
+   Node* rightOfLeftChild = leftChild->right;
+
+   //Rotate
    leftChild->right = node;
-   node = leftChild;
+   node->left = rightOfLeftChild;
 
    //Update heights
-   node->height = max(height(node->left), height(node->right));
-   node->right->height = max(height(node->right->left), 
-                             height(node->right->right));
+   node->height = max(height(node->left), height(node->right)) + 1;
+   leftChild->height = max(height(leftChild->left), 
+                             height(leftChild->right)) + 1;
 
 
-   return node;
+   return leftChild;
 
 }
 
@@ -161,17 +200,20 @@ Will not verify this before performing the operation.
 Postcondition: The given node now points to the right
 node, and the left child of the node is passed to
 the original node. */
-Army::Node* Army::rotateWithRightChild(Node*& node)
+Army::Node* Army::rotateWithRightChild(Node* node)
 {
    Node* rightChild = node->right;
-   node->right = rightChild->left;
+   Node* leftOfRightChild = rightChild->left;
+
+   //Rotate
    rightChild->left = node;
-   node = rightChild;
+   node->right = leftOfRightChild;
+
 
    //Update heights
-   node->height = max(height(node->left), height(node->right));
-   node->left->height = max(height(node->right->left),
-      height(node->right->right));
+   node->height = max(height(node->left), height(node->right)) + 1;
+   rightChild->height = max(height(rightChild->left),
+      height(rightChild->right)) + 1;
 
-   return node;
+   return rightChild;
 }

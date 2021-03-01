@@ -230,4 +230,14 @@ public:
    Postcondition: Returns true if given character is less than
    other. Otherwise returns false. */
    bool operator<(const Character& other);
+
+   /** Overloaded greater than operator so the class can be added
+   to a binary search tree. Determined based on name field.
+
+   "other" is another Character object.
+
+   Precondition: Character must have a name.
+   Postcondition: Returns true if given character is greater than
+   other. Otherwise returns false. */
+   bool operator>(const Character& other);
 };

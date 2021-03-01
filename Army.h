@@ -54,8 +54,17 @@ private:
    is greater than 1, the tree is considered unbalanced. */
    int getBalance(Node* node);
 
+   /** Outputs the BST using inorder search.
+   
+   "node" is the root of a subtree.
+
+   Precondition: None.
+   Postcondition: Sends Character << operator to output. */
+   void toString(Node* root);
+
    Node* root;
    int size;
+
 
 public:
 
@@ -87,6 +96,15 @@ public:
    pointers added. This means you won't be able to access
    a character once the Army it is in is deleted. */
    ~Army();
+
+
+
+   /** Outputs the BST using inorder search, starting
+   from the root.
+   
+   Precondition: None.
+   Postcondition: Outputs every character stored in tree. */
+   void toString();
 
    /** Adds a Character to the Army.
     
@@ -120,7 +138,7 @@ public:
    Postcondition: The given node now points to the left
    node, and the right child of the node is passed to
    the original node. */
-   Node* rotateWithLeftChild(Node*& node);
+   Node* rotateWithLeftChild(Node* node);
 
    /** Rotates the unbalanced node with its right child.
 
@@ -132,7 +150,7 @@ public:
    Postcondition: The given node now points to the right
    node, and the left child of the node is passed to
    the original node. */
-   Node* rotateWithRightChild(Node*& node);
+   Node* rotateWithRightChild(Node* node);
 
    /** Rotates the current node with the left child of
    the right child of the passed node. Used for when
