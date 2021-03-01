@@ -3,8 +3,14 @@
 Michael Patrick
 
 Army class that stores multiple Character objects
-in a AVL tree.Intended to provide quick
-access to characters sorted by name.* /
+in a AVL tree. Intended to provide quick
+access to characters sorted by name.
+
+AVL Tree functionality largely taken from:
+https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+with slight modifications. */
+
+
 /** Basic constructor for the class. Starts off empty.
 
 Precondition: None.

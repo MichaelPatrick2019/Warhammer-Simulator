@@ -5,7 +5,11 @@ Michael Patrick
 
 Army class that stores multiple Character objects
 in a AVL tree. Intended to provide quick
-access to characters sorted by name. */
+access to characters sorted by name. 
+
+AVL Tree functionality largely taken from:
+https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+with slight modifications. */
 
 #include "Character.h"
 #include <fstream>
