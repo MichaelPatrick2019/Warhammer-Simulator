@@ -204,7 +204,8 @@ bool Character::setMelee(string input)
 }
 
 /** Sets the psychic abilities of the unit if the unit is a psyker.
-* References the psychic ability from a database.
+* References the psychic ability from a database. If passed "None",
+* returns false.
 
 "input" is the name of any number of psychic abilities as a string.
 Separate abilities by a space...
@@ -218,6 +219,8 @@ If it's not, returns false, and doesn't
 add the psychic ability to the character. */
 bool Character::setPsychic(string input)
 {
+   if (input.compare("None") == 0) return false;
+
    vector<string>* psychicSplit = split(" ", input);
 
    for (int i = 0; i < psychicSplit->size(); i++) {
@@ -230,6 +233,7 @@ bool Character::setPsychic(string input)
 
    delete psychicSplit;
 
+   psyker_ = true; //Did I not set this to true before??
    return true;
 }
 

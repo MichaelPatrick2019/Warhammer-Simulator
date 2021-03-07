@@ -93,6 +93,36 @@ public:
    Postcondition: Creates an Army object. */
    Army();
 
+   /** Special constructor for initializing an army based on
+   an input file. The input file must adhere to the
+   following format...
+   
+   [Character 1 Name]
+   [Character 1 Stats]
+   [Character Psychic Abilities] (if none, "None")
+   Ranged [Character 1 Ranged 1]
+   .
+   .
+   .
+   Melee [Character 1 Melee 1]
+   .
+   .
+   .
+   [Space]
+   [Character 2 Name]
+   .
+   .
+   .
+   etc.
+
+   "fileName" is a string of the file name, ending with ".txt"
+
+   Precondition: The passed file must be a valid text file that exists
+   in the same folder as Army.h
+   Postcondition: Creates Character pointers and adds them to the
+   new Army object. */
+   Army(string fileName);
+
    //Need a way to read in armies from a file...
    /** Initializes an army object based off a formatted file.
    File format..
@@ -118,8 +148,6 @@ public:
    Also assumes this will only be called once on the
    Army object.*/
    ~Army();
-
-
 
    /** Outputs the BST using inorder search, starting
    from the root.

@@ -16,6 +16,11 @@ with slight modifications. */
 Precondition: None.
 Postcondition: Creates an Army object. */
 #include "Army.h"
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
 
 /** Node constructor that assigns the node a Character value.
 Precondition: None.
@@ -26,8 +31,98 @@ Army::Node::Node(Character* character) : character(character),
 {
 }
 
+/** Basic constructor for the class. Starts off empty.
+
+Precondition: None.
+Postcondition: Creates an Army object. */
 Army::Army() : root(nullptr), size(0)
 {
+}
+
+/** Special constructor for initializing an army based on
+an input file. The input file must adhere to the
+following format...
+
+[Character 1 Name]
+[Character 1 Stats]
+[Character Psychic Abilities] (if none, "None")
+Ranged [Character 1 Ranged 1] (if none, "None");
+.
+.
+.
+Melee [Character 1 Melee 1]
+.
+.
+.
+[Space]
+[Character 2 Name]
+.
+.
+.
+etc.
+
+"fileName" is a string of the file name, ending with ".txt"
+
+Precondition: The passed file must be a valid text file that exists
+in the same folder as Army.h
+Postcondition: Creates Character pointers and adds them to the
+new Army object. */
+Army::Army(string fileName)
+{
+   //Standard initialization
+   root = nullptr;
+   size = 0;
+
+   ifstream characterFile(fileName);
+   string line;
+   if (characterFile.is_open()) {
+      while (!characterFile.eof()) {
+         //Initalize new Character
+         Character* newChar = new Character();
+
+         //First line is the name...
+         getline(characterFile, line);
+         newChar->setName(line);
+
+         //Next line is stats
+         getline(characterFile, line);
+         newChar->setStats(line);
+
+         //Next line is psyker abilities
+         getline(characterFile, line);
+         newChar->setPsychic(line);
+
+         //Next is multiple ranged weapons...
+         getline(characterFile, line);
+         if (line.compare("None") != 0) {
+            while (line.substr(0, 6).compare("Ranged") == 0) {
+               newChar->setRanged(line.substr(7));
+               getline(characterFile, line);
+            }
+         }
+         else {
+            getline(characterFile, line);
+         }
+
+         //Next is multiple melee weapons...
+         if (line.compare("None") != 0) {
+            while (line.substr(0, 5).compare("Melee") == 0) {
+               newChar->setMelee(line.substr(6));
+               getline(characterFile, line);
+               if (characterFile.eof() || line.compare("") == 0) break;
+            }
+         }
+
+         //Reach end of given Character, add to Army.
+
+         add(newChar);
+      }
+   }
+   else {
+      cout << "File couldn't be opened..." << endl;
+   }
+
+   characterFile.close();
 }
 
 /** Private recursive helper method for the destructor. Deletes
