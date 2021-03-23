@@ -9,6 +9,8 @@ engaging in combat with other characters. */
 #include <iostream>
 #include <vector>
 #include "Character.h"
+#include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -318,4 +320,98 @@ other. Otherwise returns false. */
 bool Character::operator>(const Character& other)
 {
    return name_.compare(other.name_) > 0;
+}
+
+/** Performs a melee attack upon an enemy character.
+
+"enemy" is another character passed by value.
+
+Precondition: Assumes a list of melee option have been provided
+to the player.
+Postcondition: Modifies the enemy character based on the outcome
+of the attack. Also provides a list of simulated dice rolls to
+the output. */
+void Character::meleeAttack(Character& enemy)
+{
+   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+   cout << "Rolling to hit with WS " << stats_[2] << "..." << endl;
+   default_random_engine generator(seed);
+   uniform_int_distribution<int> diceRoll(1, 6);
+   vector<int> potentialDamage;
+
+   //Calculating Hits
+   int totalHits = 0;
+   for (int i = 0; i < stats_[6]; i++) {
+      int roll = diceRoll(generator);
+      cout << roll << " ";
+
+      if (roll >= stats_[2]) {
+         totalHits++;
+      }
+   }
+   cout << endl << "Total number of hits: " << totalHits << endl;
+
+   //Calculating Wounds
+   int str;
+   if (melee_[0]->at(1) == (string)"User") {  //assume 0th melee weapon for now
+      str = stats_[3];
+   }
+   else {
+      str = stoi(melee_[0]->at(1));
+   }
+   int tough = enemy.stats_[4];
+
+   //Rules for wounds...
+   int woundRoll;
+   if (str / 2 >= tough) {
+      woundRoll = 2;
+   }
+   else if (str > tough) {
+      woundRoll = 3;
+   }
+   else if (str == tough) {
+      woundRoll = 4;
+   }
+   else if (tough / 2 >= str) {
+      woundRoll = 6;
+   }
+   else {
+      woundRoll = 5;
+   }
+
+   cout << "Wounding on " << woundRoll << "s.." << endl;
+
+   int totalWounds = 0;
+   for (int i = 0; i < totalHits; i++) {
+      int roll = diceRoll(generator);
+      cout << roll << " ";
+
+      if (roll >= woundRoll) {
+         totalWounds++;
+      }
+   }
+
+   cout << endl << "Total wounds: " << totalWounds << endl;
+   
+   int armorSave = enemy.stats_[8];
+   int invulnSave = enemy.stats_[9];
+   int bestSave = ((armorSave - stoi(melee_[0]->at(2)) >= invulnSave) ? 
+      armorSave - stoi(melee_[0]->at(2)) : invulnSave);
+   
+   cout << "Each hit does " << melee_[0]->at(3) << " damage." << endl;
+   cout << "Saving on " << bestSave << "s." << endl;
+   int dmg = 0;
+   int succesfulHits = 0;
+   for (int i = 0; i < totalWounds; i++) {
+      int roll = diceRoll(generator);
+      cout << roll << " ";
+
+      if (roll < bestSave) {
+         dmg += stoi(melee_[0]->at(3));
+         succesfulHits++;
+      }
+   }
+   cout << endl << succesfulHits << " succesful wounds." << endl;
+   cout << dmg << " damage done!";
+   enemy.stats_[5] -= dmg;
 }

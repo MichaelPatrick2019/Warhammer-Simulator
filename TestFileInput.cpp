@@ -19,4 +19,16 @@ int main()
    if (falseCharacter != nullptr) {
       cout << *falseCharacter << endl;
    }
+   else {
+      cout << endl;
+   }
+
+   Character* first = trueCharacter;
+   Character* second = newArmy.retrieve((string)"Test Character One");
+   cout << endl;
+
+   //Testing combat...
+   cout << "test char two attacking test char one:" << endl;
+   first->meleeAttack(*second);
+   cout << endl;
 }

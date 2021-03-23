@@ -21,7 +21,10 @@ class Character
 {
 private:
    string name_;
+
+   // [M] [WS] [BS] [S] [T] [W] [A] [Ld] [Armor Sv] [Invuln Sv]
    int stats_[NUM_STATS]{ }; //Array of ints of inherent stats.
+
    bool psyker_; //Does the character manifest psychic abilities?
 
    vector<string*> psychicAbilities_; //Store as list of strings
