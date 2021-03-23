@@ -81,6 +81,17 @@ private:
    Postcondition: Sends all strings to outstream. */
    friend void sendSubTreeToOut(ostream& os, const Army& army, Army::Node* node);
 
+   /** Locates a Character pointer with a string key, starting at the given root
+   of a subtree. 
+   
+   "key" is a string with the exact name of the character.
+   "root" is a Node pointer, the root of a subtree. 
+   
+   Precondition: None.
+   Postcondition: Returns a pointer to the Character object in question. If the object
+   is not found, returns nullptr. */
+   Character* searchByName(string name, Node* node);
+
    Node* root;
    int size;
 

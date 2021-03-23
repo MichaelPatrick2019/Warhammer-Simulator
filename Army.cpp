@@ -289,6 +289,50 @@ int Army::getBalance(Node* node)
    return (height(node->left) - height(node->right));
 }
 
+/** Searches for a certain character by its name and returns
+a pointer to it.
+
+"name" is a string key for finding the character. NOT case
+sensitive.
+
+Precondition: None.
+Postcondition: If the army is deleted, the pointer will point
+to garbage. Outputs an error message to cout if the Character
+is not found. */
+Character* Army::retrieve(string name)
+{
+   Character* ptr = searchByName(name, root);
+   if (ptr == nullptr) {
+      cout << name << " was not found.";
+   }
+   return ptr;
+}
+
+/** Locates a Character pointer with a string key, starting at the given root
+of a subtree.
+
+"key" is a string with the exact name of the character.
+"root" is a Node pointer, the root of a subtree.
+
+Precondition: None.
+Postcondition: Returns a pointer to the Character object in question. If the object
+is not found, returns nullptr. */
+Character* Army::searchByName(string name, Node* node)
+{
+   if (node == nullptr) return nullptr;
+
+   if (name == node->character->getName()) {
+      return node->character;
+   }
+
+   if (name < node->character->getName()) {
+      return searchByName(name, node->left);
+   }
+   else {
+      return searchByName(name, node->right);
+   }
+}
+
 /** Rotates the unbalanced node with its left child.
 
 "node" is the unbalanced node passed by reference.

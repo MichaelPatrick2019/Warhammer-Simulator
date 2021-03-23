@@ -89,6 +89,12 @@ public:
    string. Returns true if succesful. */
    bool setName(string input);
 
+   /** Returns the name of the Character as a string.
+   
+   Precondition: None.
+   Postcondition: Returns a string. */
+   string getName();
+
    /** Sets the stats of the character to the input. Takes in a string.
    
    "input" is a string in a specified format...

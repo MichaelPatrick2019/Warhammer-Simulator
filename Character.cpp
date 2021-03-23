@@ -70,6 +70,15 @@ bool Character::setName(string input)
    return true;
 }
 
+/** Returns the name of the Character as a string.
+
+Precondition: None.
+Postcondition: Returns a string. */
+string Character::getName()
+{
+   return name_;
+}
+
 /** Sets the stats of the character to the input. Takes in a string.
 
 "input" is a string in a specified format...
