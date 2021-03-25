@@ -14,7 +14,7 @@ engaging in combat with other characters. */
 using namespace std;
 
 const int NUM_STATS = 10;
-const int NUM_RANGED = 7;
+const int NUM_RANGED = 8;
 const int NUM_MELEE = 5;
 
 class Character
@@ -22,7 +22,7 @@ class Character
 private:
    string name_;
 
-   // [M] [WS] [BS] [S] [T] [W] [A] [Ld] [Armor Sv] [Invuln Sv]
+   // [M] [WS] [BS] [S] [T] [W] [A] [Ld] [Armor   Sv] [Invuln Sv]
    int stats_[NUM_STATS]{ }; //Array of ints of inherent stats.
 
    bool psyker_; //Does the character manifest psychic abilities?
@@ -32,7 +32,11 @@ private:
 
    //Unknown number of weapons...
    //Destructor has to manage this dynamically allocated memory!
+
+   //[Name][Range][Type][number of attacks][S][AP][D][Abilities]
    vector<vector<string>*> rangedWeapons_; //Must account for certain keywords
+
+   //[Name] [S] [AP] [D] [Abilities]
    vector<vector<string>*> melee_; //Also has special keywords that are input as
    //strings
 
@@ -45,6 +49,15 @@ private:
    Returns true if succesful. */
    bool setWeapon(string input, int sizeOfWeaponData);
 
+   /** Private helper function that generalizes weapon combat for
+   either melee or ranged combat.
+   
+   Precondition: None. Returns prematurely if the enemy or self has
+   a W(ound) stat of 0.
+   Postcondition: Outputs dice rolls and combat results to output,
+   and changes the W stat of the enemy. */
+   void combat(Character& enemy, int hitStats, int userStrength, string weaponStrength,
+      int weaponAP, int weaponDamage, string stat);
 public:
 
    //Make me private please!
@@ -197,7 +210,7 @@ public:
    Postcondition: Modifies the passed character based on
    the outcome of the ranged attack Lists the results of each
    dice roll to output as well. */
-   void rangedAttack(Character& enemy);
+   void rangedAttack(Character& enemy, string stat = (string) "BS");
 
    /** Performs a melee attack upon an enemy character.
    
@@ -208,7 +221,7 @@ public:
    Postcondition: Modifies the enemy character based on the outcome
    of the attack. Also provides a list of simulated dice rolls to
    the output. */
-   void meleeAttack(Character& enemy);
+   void meleeAttack(Character& enemy, string stat = (string) "WS");
 
    /** Performs a morale test on the unit.
    
@@ -249,4 +262,6 @@ public:
    Postcondition: Returns true if given character is greater than
    other. Otherwise returns false. */
    bool operator>(const Character& other);
+
+
 };

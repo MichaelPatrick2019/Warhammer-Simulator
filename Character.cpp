@@ -129,23 +129,23 @@ vector<string>* Character::split(string delimiter, string str)
       result->push_back(str.substr(start, end - start));
    }
 
-   while (end < str.size()) {
+   while (unsigned(end) < str.size()) {
       start = end + 1;
 
       //Move start to point to next item after a delimiter
       //Or, reaches the end of the substring.
-      while (start < str.size() && str.substr(start, delimiter.size()) == delimiter) {
+      while (unsigned(start) < str.size() && str.substr(start, delimiter.size()) == delimiter) {
          start += delimiter.size(); //Should point eventually to a non-delimiter.
       }
 
-      if (start >= str.size()) start = str.size();
+      if (unsigned(start) >= str.size()) start = str.size();
 
       //End points to the next delimiter after the object
       end = str.substr(start).find(delimiter) + start;
 
       //If no delimiter until end of str...
       if (str.substr(start).find(delimiter) == string::npos
-         || end >= str.size()) end = str.size();
+         || unsigned(end) >= str.size()) end = str.size();
 
       result->push_back(str.substr(start, end - start));
    }
@@ -234,7 +234,7 @@ bool Character::setPsychic(string input)
 
    vector<string>* psychicSplit = split(" ", input);
 
-   for (int i = 0; i < psychicSplit->size(); i++) {
+   for (int i = 0; unsigned(i) < psychicSplit->size(); i++) {
       //Call string copy constructor on values in psychicSplit()
       string* temp = new string(psychicSplit->at(i));
 
@@ -268,7 +268,7 @@ ostream& operator<<(ostream& os, const Character& character)
    os << endl;
 
    //Psychic Abilities
-   for (int i = 0; i < character.psychicAbilities_.size(); i++) {
+   for (int i = 0; unsigned(i) < character.psychicAbilities_.size(); i++) {
       os << *character.psychicAbilities_[i] << " ";
    }
    os << endl;
@@ -276,7 +276,7 @@ ostream& operator<<(ostream& os, const Character& character)
    //Ranged Weapons
    // You should be able to refactor me since same code is used
    // for rangedWeapons_ and melee_.
-   for (int i = 0; i < character.rangedWeapons_.size(); i++) {
+   for (int i = 0; unsigned(i) < character.rangedWeapons_.size(); i++) {
       for (int j = 0; j < NUM_RANGED; j++) {
          vector<string>* ranged = character.rangedWeapons_[i];
          os << ranged->at(j) << " ";
@@ -285,7 +285,7 @@ ostream& operator<<(ostream& os, const Character& character)
    }
    
    //Melee Weapons
-   for (int i = 0; i < character.melee_.size(); i++) {
+   for (int i = 0; unsigned(i) < character.melee_.size(); i++) {
       for (int j = 0; j < NUM_MELEE; j++) {
          vector<string>* melee = character.melee_[i];
          os << melee->at(j) << " ";
@@ -322,19 +322,29 @@ bool Character::operator>(const Character& other)
    return name_.compare(other.name_) > 0;
 }
 
-/** Performs a melee attack upon an enemy character.
 
-"enemy" is another character passed by value.
 
-Precondition: Assumes a list of melee option have been provided
-to the player.
-Postcondition: Modifies the enemy character based on the outcome
-of the attack. Also provides a list of simulated dice rolls to
-the output. */
-void Character::meleeAttack(Character& enemy)
+/** Private helper function that generalizes weapon combat for
+either melee or ranged combat.
+
+Precondition: None. Returns prematurely if the enemy or self has
+a W(ound) stat of 0.
+Postcondition: Outputs dice rolls and combat results to output,
+and changes the W stat of the enemy. */
+void Character::combat(Character& enemy, int hitStats, int userStrength, string weaponStrength,
+   int weaponAP, int weaponDamage, string stat)
 {
-   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-   cout << "Rolling to hit with WS " << stats_[2] << "..." << endl;
+   if (enemy.stats_[5] <= 0) {
+      cout << "Enemy character is already dead...";
+      return;
+   }
+   else if (stats_[5] <= 0) {
+      cout << "Attacking character is already dead...";
+      return;
+   }
+
+   unsigned seed = (unsigned)chrono::system_clock::now().time_since_epoch().count();
+   cout << "Rolling to hit with " << stat << " " << hitStats << "..." << endl;
    default_random_engine generator(seed);
    uniform_int_distribution<int> diceRoll(1, 6);
    vector<int> potentialDamage;
@@ -345,7 +355,7 @@ void Character::meleeAttack(Character& enemy)
       int roll = diceRoll(generator);
       cout << roll << " ";
 
-      if (roll >= stats_[2]) {
+      if (roll >= hitStats) {
          totalHits++;
       }
    }
@@ -353,11 +363,11 @@ void Character::meleeAttack(Character& enemy)
 
    //Calculating Wounds
    int str;
-   if (melee_[0]->at(1) == (string)"User") {  //assume 0th melee weapon for now
-      str = stats_[3];
+   if (weaponStrength == (string)"User") {  //assume 0th melee weapon for now
+      str = userStrength;
    }
    else {
-      str = stoi(melee_[0]->at(1));
+      str = stoi(weaponStrength);
    }
    int tough = enemy.stats_[4];
 
@@ -392,13 +402,13 @@ void Character::meleeAttack(Character& enemy)
    }
 
    cout << endl << "Total wounds: " << totalWounds << endl;
-   
+
    int armorSave = enemy.stats_[8];
    int invulnSave = enemy.stats_[9];
-   int bestSave = ((armorSave - stoi(melee_[0]->at(2)) >= invulnSave) ? 
-      armorSave - stoi(melee_[0]->at(2)) : invulnSave);
-   
-   cout << "Each hit does " << melee_[0]->at(3) << " damage." << endl;
+   int bestSave = ((armorSave - weaponAP) >= invulnSave) ?
+      (armorSave - weaponAP) : invulnSave;
+
+   cout << "Each hit does " << to_string(weaponDamage) << " damage." << endl;
    cout << "Saving on " << bestSave << "s." << endl;
    int dmg = 0;
    int succesfulHits = 0;
@@ -407,11 +417,131 @@ void Character::meleeAttack(Character& enemy)
       cout << roll << " ";
 
       if (roll < bestSave) {
-         dmg += stoi(melee_[0]->at(3));
+         dmg += weaponDamage;
          succesfulHits++;
       }
    }
    cout << endl << succesfulHits << " succesful wounds." << endl;
-   cout << dmg << " damage done!";
+   cout << dmg << " damage done!" << endl;
    enemy.stats_[5] -= dmg;
+   
+   cout << "Target has " << enemy.stats_[5] << " health left!";
+}
+
+/** Performs a ranged attack upon an enemy character.
+
+"enemy" is another character passed by value.
+
+Precondition: Assumes all of this character's ranged
+weapons will be used on the enemy.
+
+Postcondition: Modifies the passed character based on
+the outcome of the ranged attack Lists the results of each
+dice roll to output as well. */
+void Character::rangedAttack(Character& enemy, string stat)
+{
+   combat(enemy, stats_[2], stats_[3], rangedWeapons_[0]->at(4),
+      stoi(rangedWeapons_[0]->at(5)), stoi(rangedWeapons_[0]->at(6)), stat);
+}
+
+/** Performs a melee attack upon an enemy character.
+
+"enemy" is another character passed by value.
+
+Precondition: Assumes a list of melee option have been provided
+to the player.
+Postcondition: Modifies the enemy character based on the outcome
+of the attack. Also provides a list of simulated dice rolls to
+the output. */
+void Character::meleeAttack(Character& enemy, string stat)
+{
+   combat(enemy, stats_[1], stats_[3], melee_[0]->at(1), 
+      stoi(melee_[0]->at(2)), stoi(melee_[0]->at(3)), stat);
+
+   //if (enemy.stats_[5] == 0) {
+   //   cout << "This character is already dead...";
+   //   return;
+   //}
+
+   //unsigned seed = (unsigned)chrono::system_clock::now().time_since_epoch().count();
+   //cout << "Rolling to hit with WS " << stats_[2] << "..." << endl;
+   //default_random_engine generator(seed);
+   //uniform_int_distribution<int> diceRoll(1, 6);
+   //vector<int> potentialDamage;
+
+   ////Calculating Hits
+   //int totalHits = 0;
+   //for (int i = 0; i < stats_[6]; i++) {
+   //   int roll = diceRoll(generator);
+   //   cout << roll << " ";
+
+   //   if (roll >= stats_[2]) {
+   //      totalHits++;
+   //   }
+   //}
+   //cout << endl << "Total number of hits: " << totalHits << endl;
+
+   ////Calculating Wounds
+   //int str;
+   //if (melee_[0]->at(1) == (string)"User") {  //assume 0th melee weapon for now
+   //   str = stats_[3];
+   //}
+   //else {
+   //   str = stoi(melee_[0]->at(1));
+   //}
+   //int tough = enemy.stats_[4];
+
+   ////Rules for wounds...
+   //int woundRoll;
+   //if (str / 2 >= tough) {
+   //   woundRoll = 2;
+   //}
+   //else if (str > tough) {
+   //   woundRoll = 3;
+   //}
+   //else if (str == tough) {
+   //   woundRoll = 4;
+   //}
+   //else if (tough / 2 >= str) {
+   //   woundRoll = 6;
+   //}
+   //else {
+   //   woundRoll = 5;
+   //}
+
+   //cout << "Wounding on " << woundRoll << "s.." << endl;
+
+   //int totalWounds = 0;
+   //for (int i = 0; i < totalHits; i++) {
+   //   int roll = diceRoll(generator);
+   //   cout << roll << " ";
+
+   //   if (roll >= woundRoll) {
+   //      totalWounds++;
+   //   }
+   //}
+
+   //cout << endl << "Total wounds: " << totalWounds << endl;
+   //
+   //int armorSave = enemy.stats_[8];
+   //int invulnSave = enemy.stats_[9];
+   //int bestSave = ((armorSave - stoi(melee_[0]->at(2)) >= invulnSave) ? 
+   //   armorSave - stoi(melee_[0]->at(2)) : invulnSave);
+   //
+   //cout << "Each hit does " << melee_[0]->at(3) << " damage." << endl;
+   //cout << "Saving on " << bestSave << "s." << endl;
+   //int dmg = 0;
+   //int succesfulHits = 0;
+   //for (int i = 0; i < totalWounds; i++) {
+   //   int roll = diceRoll(generator);
+   //   cout << roll << " ";
+
+   //   if (roll < bestSave) {
+   //      dmg += stoi(melee_[0]->at(3));
+   //      succesfulHits++;
+   //   }
+   //}
+   //cout << endl << succesfulHits << " succesful wounds." << endl;
+   //cout << dmg << " damage done!";
+   //enemy.stats_[5] -= dmg;
 }

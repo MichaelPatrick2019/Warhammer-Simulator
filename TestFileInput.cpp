@@ -28,7 +28,16 @@ int main()
    cout << endl;
 
    //Testing combat...
-   cout << "test char two attacking test char one:" << endl;
-   first->meleeAttack(*second);
+   //cout << "test char two attacking test char one:" << endl;
+   //first->meleeAttack(*second);
+   //cout << endl << endl;
+
+   //cout << "test char two attacking test char one again:" << endl;
+   //first->meleeAttack(*second);
+   //cout << endl;
+
+
+   cout << "test char two shooting char one" << endl;
+   first->rangedAttack(*second);
    cout << endl;
 }
