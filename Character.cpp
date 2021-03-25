@@ -327,6 +327,19 @@ bool Character::operator>(const Character& other)
 /** Private helper function that generalizes weapon combat for
 either melee or ranged combat.
 
+"enemy" is an enemy Character object being attacked.
+"hitStats" are the attacker's hit characteristics (either weapon skill
+or ballistic skill), always an int
+"userStrength" is an int representing the innate strength characteristic
+of the attacker.
+"weaponStrength" is a string denoting the strength of the weapon. Occasionally
+is "User", so can't be an int.
+"weaponAP" is an int that describes the armor piercing ability of the weapon.
+"weaponDamage" is the damage output of each succesful wound of the weapon, as an
+int.
+"stat" is a string that is either BS, or WS, depending on if it is ranged or melee
+combat respectively.
+
 Precondition: None. Returns prematurely if the enemy or self has
 a W(ound) stat of 0.
 Postcondition: Outputs dice rolls and combat results to output,
@@ -431,6 +444,8 @@ void Character::combat(Character& enemy, int hitStats, int userStrength, string 
 /** Performs a ranged attack upon an enemy character.
 
 "enemy" is another character passed by value.
+"stat" is the type of to-hit characteristic being used. In this
+case, defaults to "WS".
 
 Precondition: Assumes all of this character's ranged
 weapons will be used on the enemy.
@@ -447,6 +462,8 @@ void Character::rangedAttack(Character& enemy, string stat)
 /** Performs a melee attack upon an enemy character.
 
 "enemy" is another character passed by value.
+"stat" is the type of to-hit characteristic being used. In this
+case, defaults to "BS".
 
 Precondition: Assumes a list of melee option have been provided
 to the player.
