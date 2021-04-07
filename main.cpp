@@ -8,13 +8,91 @@ Michael Patrick
 
 #include <iostream>
 #include <string>
+#include "Army.h"
+#include "Character.h"
+#include "CombatFactory.h"
+#include "Combat.h"
+
 using namespace std;
+
+/** Creates an instance that requires the user to input a character
+name, and assigns it to the Character object passed by value.
+
+"army" is some Army object.
+
+Precondition: There needs to be a character in the passed Army object.
+Postcondition: Returns a Character pointer. */
+Character* getCharacter(Army& army)
+{
+   Character* character = nullptr;
+   string attackerName;
+
+   getline(cin, attackerName);
+   character = army.retrieve(attackerName);
+
+   cout << endl;
+
+   while (character == nullptr)
+   {
+      cout << "You'll have to enter their name exactly... Try again: ";
+
+      getline(cin, attackerName);
+      character = army.retrieve(attackerName);
+
+      cout << endl;
+   }
+
+   return character;
+}
 
 
 int main()
 {
-   cout << "Welcome to Warhammer 40k! Please enter you army details below...";
+   cout << "Welcome to Warhammer 40k! Your army will be loaded by army.txt";
+   cout << endl << endl;
+
+   Army newArmy("army.txt");
+
+   cout << "Here's a list of all the units in the army currently: " << endl << endl;
+
+   cout << newArmy;
+
+   cout << endl << "Now that we see who we've got, let's practice some combat." << endl;
+
+   cout << "Please enter the name of the character you'd like to initiate an attack: ";
+
+   Character* attacker = getCharacter(newArmy);
+
+   cout << "Great - now, enter the name of the character you want to attack: ";
+
+   Character* defender = getCharacter(newArmy);
+
+   while (attacker == defender) {
+      cout << "Please make sure you choose a different character. " << endl << endl;
+
+      cout << "The name of the character you want to attack: ";
+      defender = getCharacter(newArmy);
+   }
+
    cout << endl;
+
+   cout << "Please enter either 'ranged' or 'melee' to indicate the type of combat you";
+   cout << " would like to occur: ";
+
+   Combat* combatType;
+   string combatInput;
+   CombatFactory factory;
+
+   cin >> combatInput;
+   combatType = factory.generateCombatObject(combatInput);
+
+   cout << endl << "Combat Begins!" << endl << endl;
+
+   combatType->fight(attacker, defender);
+   
+   cout << endl;
+
+
 
    /**
    bool notDone = true;

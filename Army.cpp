@@ -303,7 +303,7 @@ Character* Army::retrieve(string name)
 {
    Character* ptr = searchByName(name, root);
    if (ptr == nullptr) {
-      cout << name << " was not found.";
+      cout << endl << name << " was not found." << endl;
    }
    return ptr;
 }
