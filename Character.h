@@ -22,7 +22,20 @@ class Character
 private:
    string name_;
 
-   // [M] [WS] [BS] [S] [T] [W] [A] [Ld] [Armor   Sv] [Invuln Sv]
+   /** Refactor of stats into individual data members for
+   ease of access and reference. */
+   int movement_;
+   int weaponSkill_;
+   int ballisticSkill_;
+   int strength_;
+   int toughness_;
+   int wounds_;
+   int attacks_;
+   int leadership_;
+   int armorSave_;
+   int invulnSave_;
+
+   // [M] [WS] [BS] [S] [T] [W] [A] [Ld] [Armor Sv] [Invuln Sv]
    int stats_[NUM_STATS]{ }; //Array of ints of inherent stats.
 
    bool psyker_; //Does the character manifest psychic abilities?
@@ -58,7 +71,92 @@ private:
    and changes the W stat of the enemy. */
    void combat(Character& enemy, int hitStats, int userStrength, string weaponStrength,
       int weaponAP, int weaponDamage, string stat);
+
+   /** Allows for internal modification of the wounds_ attribute, since the Character
+   can no longer participate in battle once it reaches 0. 
+
+   "damageTaken" is an int representing the value that should be subtracted
+   from the current wound total.
+   
+   Precondition: Assumes the value won't be modified if it is already 0.
+   Postcondition: Subtracts the given amount from the wounds_ data member, until
+   it reaches a minimum value of zero. */
+   void takeDamage(int damageTaken);
+
 public:
+   /** Returns the character's movement value (in inches).
+   
+   Precondition: None.
+   Postcondition: Returns an int. */
+   int getMovement();
+
+   /** Returns the character's weapon skill.
+   
+   Precondition: None.
+   Postcondition: Returns an int. */
+   int getWS();
+
+   /** Returns the character's ballistic skill. 
+   
+   Precondition: None.
+   Postcondition: Returns an int. */
+   int getBS();
+
+   /** Returns the character's strength value. 
+   
+   Precondition: None.
+   Postcondition: Returns an int. */
+   int getStrength();
+
+   /** Returns the character's toughness value.
+   
+   Precondition: None.
+   Postcondition: Returns an int. */
+   int getToughness();
+
+   /** Returns the character's remaining wounds. 
+   
+   Precondition: None.
+   Postcondition: Returns an int. */
+   int getWounds();
+
+   /** Returns the character's number of attacks (usually for
+   melee weapons) 
+   
+   Precondition: None.
+   Postcondition: Returns an int. */
+   int getAttacks();
+
+   /** Returns the character's leadership stat. 
+   
+   Precondition: None.
+   Postcondition: Returns an int. */
+   int getLeadership();
+
+   /** Returns the character's armor save.
+   
+   Precondition: None.
+   Postcondition: Returns an int. */
+   int getArmorSave();
+
+   /** Returns the character's invuln save.
+   
+   Precondition: None.
+   Postcondition: Returns an int. If a character has no invuln save,
+   returns 0 instead. */
+   int getInvulnSave();
+
+   /** Fully equipped constructor that allows for a complete initialization
+   of the Character object. The paramater "statLine" must be formatted in
+   the following way:
+
+   [M] [WS] [BS] [S] [T] [W] [A] [Ld] [Armor Sv] [Invuln Sv]
+
+   "statLine" is a string formatted as above.
+   
+   Precondition: The paramaters must follow with the stated declarations.
+   Postcondition: Creates a fully initialized Character object. */
+   Character(string statLine);
 
    //Make me private please!
    /** Basic function that splits a string by a certain delimiter and returns
@@ -263,5 +361,5 @@ public:
    other. Otherwise returns false. */
    bool operator>(const Character& other);
 
-
+   
 };
