@@ -217,7 +217,6 @@ Army::Node* Army::insert(Node* node, Character* key)
    //Standard insertion
    if (node == nullptr) return new Node(key);
    if (*key < *node->character) { //Don't comapre addresses!
-      cout << "key < node..." << endl;
       node->left = insert(node->left, key);
    }
    else if (*key > *node->character) {

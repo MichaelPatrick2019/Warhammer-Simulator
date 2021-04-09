@@ -268,10 +268,14 @@ ostream& operator<<(ostream& os, const Character& character)
    os << endl;
 
    //Psychic Abilities
-   for (int i = 0; unsigned(i) < character.psychicAbilities_.size(); i++) {
-      os << *character.psychicAbilities_[i] << " ";
+   if (!character.psyker_) os << "None" << endl;
+   else {
+      for (int i = 0; unsigned(i) < character.psychicAbilities_.size(); i++) {
+            os << *character.psychicAbilities_[i] << " ";
+         }
+         os << endl;
    }
-   os << endl;
+   
 
    //Ranged Weapons
    // You should be able to refactor me since same code is used
