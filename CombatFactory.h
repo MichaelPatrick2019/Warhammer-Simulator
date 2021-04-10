@@ -26,7 +26,7 @@ private:
    Precondition: None.
    Postcondition: Returns an int, that represents an index for
    the hash table */
-   int hash(string input);
+   int hash(string input) const;
 
    /** Adds a particular Combat pointer associated with a given
    word.
@@ -63,5 +63,5 @@ public:
    Precondition: None.
    Postcondition: Returns a Combat pointer, from which the caller is
    expected to call the fight() method. */
-   Combat* generateCombatObject(string input);
+   Combat* generateCombatObject(string input) const;
 };

@@ -17,7 +17,7 @@ using namespace std;
 Precondition: None.
 Postcondition: Returns an int, that represents an index for
 the hash table */
-int CombatFactory::hash(string input)
+int CombatFactory::hash(string input) const
 {
    int index = 0;
 
@@ -99,7 +99,7 @@ For this class, it will need to index, specifically, "melee" and
 Precondition: None.
 Postcondition: Returns a Combat pointer, from which the caller is
 expected to call the fight() method. */
-Combat* CombatFactory::generateCombatObject(string input)
+Combat* CombatFactory::generateCombatObject(string input) const
 {
    return buckets[hash(input)];
 }

@@ -88,63 +88,63 @@ public:
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getMovement();
+   int getMovement() const;
 
    /** Returns the character's weapon skill.
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getWS();
+   int getWS() const;
 
    /** Returns the character's ballistic skill. 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getBS();
+   int getBS() const;
 
    /** Returns the character's strength value. 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getStrength();
+   int getStrength() const;
 
    /** Returns the character's toughness value.
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getToughness();
+   int getToughness() const;
 
    /** Returns the character's remaining wounds. 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getWounds();
+   int getWounds() const;
 
    /** Returns the character's number of attacks (usually for
    melee weapons) 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getAttacks();
+   int getAttacks() const;
 
    /** Returns the character's leadership stat. 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getLeadership();
+   int getLeadership() const;
 
    /** Returns the character's armor save.
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getArmorSave();
+   int getArmorSave() const;
 
    /** Returns the character's invuln save.
    
    Precondition: None.
    Postcondition: Returns an int. If a character has no invuln save,
    returns 0 instead. */
-   int getInvulnSave();
+   int getInvulnSave() const;
 
    /** Fully equipped constructor that allows for a complete initialization
    of the Character object. The paramater "statLine" must be formatted in
@@ -207,7 +207,7 @@ public:
    
    Precondition: None.
    Postcondition: Returns a string. */
-   string getName();
+   string getName() const;
 
    /** Sets the stats of the character to the input. Takes in a string.
    
@@ -349,7 +349,7 @@ public:
    Precondition: Character must have a name.
    Postcondition: Returns true if given character is less than
    other. Otherwise returns false. */
-   bool operator<(const Character& other);
+   bool operator<(const Character& other) const;
 
    /** Overloaded greater than operator so the class can be added
    to a binary search tree. Determined based on name field.
@@ -359,7 +359,7 @@ public:
    Precondition: Character must have a name.
    Postcondition: Returns true if given character is greater than
    other. Otherwise returns false. */
-   bool operator>(const Character& other);
+   bool operator>(const Character& other) const;
 
    
 };

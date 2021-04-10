@@ -62,48 +62,48 @@ public:
    
    Precondition: None.
    Postcondition: Returns a string. */
-   string getName();
+   string getName() const;
 
    /** Returns the weapon's range (in inches).
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getRange();
+   int getRange() const;
 
    /** Returns the weapon's type.
    
    Precondition: None.
    Postcondition: Returns a string. */
-   string getType();
+   string getType() const;
 
    /** Returns the number of attacks the weapon uses. 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getAttacks();
+   int getAttacks() const;
 
    /** Returns the strength of the weapon. 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getStrength();
+   int getStrength() const;
    
    /** Returns the armor piercing value of the weapon as a 
    positive value. 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getAP();
+   int getAP() const;
 
    /** Returns the damage of each hit of the weapon.
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getDamage();
+   int getDamage() const;
 
    /** Returns any abilities the weapon has.
    
    Postcondition: Returns a string, formatted as follows:
    [ability one] [ability two] ... etc. */
-   string getAbilities();
+   string getAbilities() const;
 };

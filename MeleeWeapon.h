@@ -55,30 +55,30 @@ public:
    
    Precondition: None.
    Postcondition: Returns a string. */
-   string getName();
+   string getName() const;
 
    /** Returns the strength of the melee weapon. 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getStrength();
+   int getStrength() const;
 
    /** Returns the armor piercing value of the melee weapon. 
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getAP();
+   int getAP() const;
 
    /** Returns the damage value of each hit of the melee weapon.
    
    Precondition: None.
    Postcondition: Returns an int. */
-   int getDamage();
+   int getDamage() const;
 
    /** Returns a string of all of the abilities the melee weapon has.
    
    Precondition: None.
    Postcondition: Returns a string, formatted as follows:
    [ability one] [ability two] ... etc. */
-   string getAbilities();
+   string getAbilities() const;
 };

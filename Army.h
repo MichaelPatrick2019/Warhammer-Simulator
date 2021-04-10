@@ -34,10 +34,10 @@ private:
    };
 
    /** Quick function that returns max of two integers */
-   int max(int a, int b);
+   int max(int a, int b) const;
 
    /** Determines height of the given node... */
-   int height(Node* node);
+   int height(Node* node) const;
 
    /** Private helper method for recursively adding a node
    to the AVL tree.
@@ -55,7 +55,7 @@ private:
    Postcondition: Returns an int representing the difference
    in height between both subtrees of the node. If the difference
    is greater than 1, the tree is considered unbalanced. */
-   int getBalance(Node* node);
+   int getBalance(Node* node) const;
 
    /** Outputs the BST using inorder search.
    
@@ -63,7 +63,7 @@ private:
 
    Precondition: None.
    Postcondition: Sends Character << operator to output. */
-   void toString(Node* root);
+   void toString(Node* root) const;
 
    /** Private recursive helper method for the destructor. Deletes
  *  the given node any all of its children.
@@ -90,7 +90,7 @@ private:
    Precondition: None.
    Postcondition: Returns a pointer to the Character object in question. If the object
    is not found, returns nullptr. */
-   Character* searchByName(string name, Node* node);
+   Character* searchByName(string name, Node* node) const;
 
    Node* root;
    int size;
@@ -165,7 +165,7 @@ public:
    
    Precondition: None.
    Postcondition: Outputs every character stored in tree. */
-   void toString();
+   void toString() const;
 
    /** Adds a Character to the Army.
     
@@ -187,7 +187,7 @@ public:
    Precondition: None.
    Postcondition: If the army is deleted, the pointer will point
    to garbage. */
-   Character* retrieve(string name); //Get Character ptr by name
+   Character* retrieve(string name) const; //Get Character ptr by name
 
    /** Rotates the unbalanced node with its left child.
 
@@ -217,7 +217,7 @@ public:
    
    Precondition: None.
    Postcondition: Returns the number of Characters as an int. */
-   int numCharacters(); //Return size
+   int numCharacters() const; //Return size
 
    /** Overloaded output operator. Details all of the characters
    in the army, including all their names, statistics, weapons,

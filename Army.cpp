@@ -170,7 +170,7 @@ Army::~Army()
 
 Precondition: None.
 Postcondition: Sends Character << operator to output. */
-void Army::toString(Node* node)
+void Army::toString(Node* node) const
 {
    if (node == nullptr) {
       return;
@@ -181,7 +181,12 @@ void Army::toString(Node* node)
    toString(node->right);
 }
 
-void Army::toString()
+/** Outputs the BST using inorder search, starting
+from the root.
+
+Precondition: None.
+Postcondition: Outputs every character stored in tree. */
+void Army::toString() const
 {
    toString(root);
 }
@@ -263,14 +268,14 @@ Army::Node* Army::insert(Node* node, Character* key)
 }
 
 /** Quick function that returns max of two integers */
-int Army::max(int a, int b)
+int Army::max(int a, int b) const
 {
    //Ternary operator - if a > b, return a, else return b
    return (a > b) ? a : b;
 }
 
 /** Determines height of the given node... */
-int Army::height(Node* node)
+int Army::height(Node* node) const
 {
    if (node == nullptr) return 0;
    return node->height;
@@ -282,7 +287,7 @@ Precondition: None.
 Postcondition: Returns an int representing the difference
 in height between both subtrees of the node. If the difference
 is greater than 1, the tree is considered unbalanced. */
-int Army::getBalance(Node* node)
+int Army::getBalance(Node* node) const
 {
    if (node == nullptr) return 0;
    return (height(node->left) - height(node->right));
@@ -298,7 +303,7 @@ Precondition: None.
 Postcondition: If the army is deleted, the pointer will point
 to garbage. Outputs an error message to cout if the Character
 is not found. */
-Character* Army::retrieve(string name)
+Character* Army::retrieve(string name) const
 {
    Character* ptr = searchByName(name, root);
    if (ptr == nullptr) {
@@ -316,7 +321,7 @@ of a subtree.
 Precondition: None.
 Postcondition: Returns a pointer to the Character object in question. If the object
 is not found, returns nullptr. */
-Character* Army::searchByName(string name, Node* node)
+Character* Army::searchByName(string name, Node* node) const
 {
    if (node == nullptr) return nullptr;
 
@@ -393,7 +398,7 @@ Army::Node* Army::rotateWithRightChild(Node* node)
 
 Precondition: None.
 Postcondition: Returns the number of Characters as an int. */
-int Army::numCharacters()
+int Army::numCharacters() const
 {
    return size;
 }
