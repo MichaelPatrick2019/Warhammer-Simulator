@@ -156,21 +156,6 @@ vector<string>* Character::split(string delimiter, string str)
 }
 
 /** Adds a weapon to the collection of ranged weapons. Characters
-may have multiple ranged weapons.
-
-"input" is a string formatted to represent a ranged weapon...
-
-[Name] [Range] [Type] [number of attacks] [S] [AP] [Abilities]
-
-Precondition: The input string must adhere to the above format.
-Postcondition: The ranged weapon is added, and will be used to calculate
-ranged damage output in combat. Returns true if succesful. */
-bool Character::setRanged(string input)
-{
-   return setWeapon(input, NUM_RANGED);
-}
-
-/** Adds a weapon to the collection of ranged weapons. Characters
 may have multiple ranged weapons. Uses the RangedWeapon class.
 
 "input" is a string formatted to represent a ranged weapon...
@@ -243,52 +228,6 @@ bool Character::setMeleeNew(string input)
 
    return true;
 
-}
-
-/** Private helper function that creates a vector and pushes it
-to the appropriate data field.
-
-Precondition: Only works in relation to extant data fields.
-Postcondition: Adds a weapon to the rangedWeapons or melee field vectors.
-Returns true if succesful. */
-bool Character::setWeapon(string input, int sizeOfWeaponData) {
-   vector<string>* rangedSplit = split(" ", input);
-
-   vector<string>* singleWeapon = new vector<string>;
-
-   for (int i = 0; i < sizeOfWeaponData; i++) {
-      singleWeapon->push_back(rangedSplit->at(i));
-   }
-
-   if (sizeOfWeaponData == NUM_RANGED) {
-      rangedWeapons_.push_back(singleWeapon);
-   }
-   else { //If it's not a ranged weapon, it's melee.
-      melee_.push_back(singleWeapon);
-   }
-
-   delete rangedSplit;
-
-   return true;
-}
-
-
-/** Adds a melee weapon to the collection of ranged weapons. Characters
-may have multiple melee weapons they can choose from in melee combat.
-Accounts for the special case of certain melee weapons that are used to
-provide additional attacks alongside other melee weapons.
-
-"input" is a string formatted to represent a melee weapon.
-
-[Name] [S] [AP] [D] [Abilities]
-
-Precondition: The input string must adhere to the above format.
-Postcondition: The melee weapon is added, and will be referenced when
-offering players the option of melee weapon they would like to use in
-combat. Returns true if succesful. */
-bool Character::setMelee(string input)
-{
-   return setWeapon(input, NUM_MELEE);
 }
 
 /** Sets the psychic abilities of the unit if the unit is a psyker.

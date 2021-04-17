@@ -58,15 +58,6 @@ private:
    vector<RangedWeapon*> rangedList_; //Handle 
    vector<MeleeWeapon*> meleeList_;
 
-   /** Private helper function that creates a vector and pushes it
-   to the appropriate data field.
-   
-   Precondition: Only works in relation to extant data fields, so the
-   sizeOfWeaponData should be either NUM_STATS, NUM_RANGED, or NUM_MELEE.
-   Postcondition: Adds a weapon to the rangedWeapons or melee field vectors.
-   Returns true if succesful. */
-   bool setWeapon(string input, int sizeOfWeaponData);
-
    /** Private helper function that generalizes weapon combat for
    either melee or ranged combat.
    
@@ -255,33 +246,6 @@ public:
    Postcondition: The stats are stored in the character. Returns
    true if succesful. */
    bool setStats(string input);
-
-   /** Adds a weapon to the collection of ranged weapons. Characters
-   may have multiple ranged weapons. 
-   
-   "input" is a string formatted to represent a ranged weapon...
-
-   [Name] [Range] [Type] [number of attacks] [S] [AP] [Abilities]
-   
-   Precondition: The input string must adhere to the above format.
-   Postcondition: The ranged weapon is added, and will be used to calculate
-   ranged damage output in combat. Returns true if succesful. */
-   bool setRanged(string input);
-
-   /** Adds a melee weapon to the collection of ranged weapons. Characters
-   may have multiple melee weapons they can choose from in melee combat.
-   Accounts for the special case of certain melee weapons that are used to
-   provide additional attacks alongside other melee weapons.
-   
-   "input" is a string formatted to represent a melee weapon.
-   
-   [Name] [S] [AP] [D] [Abilities]
-   
-   Precondition: The input string must adhere to the above format.
-   Postcondition: The melee weapon is added, and will be referenced when
-   offering players the option of melee weapon they would like to use in
-   combat. Returns true if succesful. */
-   bool setMelee(string input);
 
    /** Sets the psychic abilities of the unit if the unit is a psyker.
    * References the psychic ability from a database.
