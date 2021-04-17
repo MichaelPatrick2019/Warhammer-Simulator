@@ -20,7 +20,6 @@ weapon can not be changed.
 */
 
 #include <string>
-#include "Character.h"
 
 using namespace std;
 
@@ -41,7 +40,7 @@ public:
    /** Must construct a ranged weapon with the following attributes:
    [N][R][T][A][S][AP][D][Ab.]
 
-   "Character" is the character that will be using the weapon.
+   "characterStrength" is the strength of the Character using the weapon.
    "name" is a string
    "range" is an int
    "type" is a string
@@ -54,7 +53,7 @@ public:
    Precondition: None.
    Postcondition: A RangedWeapon object is initialized with the above
    attributes. */
-   RangedWeapon(Character user, string name, int range, string type, int attacks, int strength,
+   RangedWeapon(int characterStrength, string name, int range, string type, int attacks, int strength,
       int ap, int damage, string abilities);
 
 
@@ -106,4 +105,11 @@ public:
    Postcondition: Returns a string, formatted as follows:
    [ability one] [ability two] ... etc. */
    string getAbilities() const;
+
+   /** Displays the weapon characteristics in the order
+   initialized as a string.
+   
+   Precondition: None.
+   Postcondition: Returns a string. */
+   string toString() const;
 };

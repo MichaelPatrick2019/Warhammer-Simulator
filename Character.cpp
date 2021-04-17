@@ -5,10 +5,12 @@ about a given warhammer character. Considers inherent stats, ranged and
 melee weapons, as well as detailed output to the outstream when
 engaging in combat with other characters. */
 
+#include "Character.h"
+#include "MeleeWeapon.h"
+#include "RangedWeapon.h"
 #include <string>
 #include <iostream>
 #include <vector>
-#include "Character.h"
 #include <random>
 #include <chrono>
 
@@ -186,12 +188,16 @@ bool Character::setRangedNew(string input)
    int range = stoi(rangedSplit->at(1));
    string type = rangedSplit->at(2);
    int attacks = stoi(rangedSplit->at(3));
-   int strength = stoi(rangedSplit->at(4));
+   int strength;
+   if (rangedSplit->at(4) == "User")
+      strength = -1;
+   else
+      strength = stoi(rangedSplit->at(1));
    int ap = stoi(rangedSplit->at(5));
    int damage = stoi(rangedSplit->at(6));
    string abilities = rangedSplit->at(7);
 
-   RangedWeapon* weapon = new RangedWeapon(*this, name, range, type, attacks, 
+   RangedWeapon* weapon = new RangedWeapon(getStrength(), name, range, type, attacks, 
       strength, ap, damage, abilities);
 
    delete rangedSplit;
@@ -219,14 +225,17 @@ bool Character::setMeleeNew(string input)
    vector<string>* meleeSplit = split(" ", input);
 
    string name = meleeSplit->at(0);
-   int strength = stoi(meleeSplit->at(1));
+   int strength;
+   if (meleeSplit->at(1) == "User")
+      strength = -1;
+   else
+      strength = stoi(meleeSplit->at(1));
    int ap = stoi(meleeSplit->at(2));
    int damage = stoi(meleeSplit->at(3));
    string abilities = meleeSplit->at(4);
 
-   MeleeWeapon* weapon = new MeleeWeapon(*this, name, strength, ap, damage,
+   MeleeWeapon* weapon = new MeleeWeapon(getStrength(), name, strength, ap, damage,
       abilities);
-
 
    delete meleeSplit;
 
@@ -348,21 +357,23 @@ ostream& operator<<(ostream& os, const Character& character)
    //Ranged Weapons
    // You should be able to refactor me since same code is used
    // for rangedWeapons_ and melee_.
-   for (int i = 0; unsigned(i) < character.rangedWeapons_.size(); i++) {
-      for (int j = 0; j < NUM_RANGED; j++) {
-         vector<string>* ranged = character.rangedWeapons_[i];
-         os << ranged->at(j) << " ";
-      }
-      os << endl;
+   for (int i = 0; unsigned(i) < character.rangedList_.size(); i++) {
+      os << character.rangedList_.at(i)->toString() << endl;
+      //for (int j = 0; j < NUM_RANGED; j++) {
+      //   vector<string>* ranged = character.rangedWeapons_[i];
+      //   os << ranged->at(j) << " ";
+      //}
+      //os << endl;
    }
    
    //Melee Weapons
-   for (int i = 0; unsigned(i) < character.melee_.size(); i++) {
-      for (int j = 0; j < NUM_MELEE; j++) {
-         vector<string>* melee = character.melee_[i];
-         os << melee->at(j) << " ";
-      }
-      os << endl;
+   for (int i = 0; unsigned(i) < character.meleeList_.size(); i++) {
+      os << character.meleeList_.at(i)->toString() << endl;
+      //for (int j = 0; j < NUM_MELEE; j++) {
+      //   vector<string>* melee = character.melee_[i];
+      //   os << melee->at(j) << " ";
+      //}
+      //os << endl;
    }
 
    return os;
@@ -416,7 +427,7 @@ Precondition: None. Returns prematurely if the enemy or self has
 a W(ound) stat of 0.
 Postcondition: Outputs dice rolls and combat results to output,
 and changes the W stat of the enemy. */
-void Character::combat(Character& enemy, int hitStats, int userStrength, string weaponStrength,
+void Character::combat(Character& enemy, int hitStats, int userStrength, int weaponStrength,
    int weaponAP, int weaponDamage, string stat)
 {
    if (enemy.stats_[5] <= 0) {
@@ -447,13 +458,8 @@ void Character::combat(Character& enemy, int hitStats, int userStrength, string 
    cout << endl << "Total number of hits: " << totalHits << endl;
 
    //Calculating Wounds
-   int str;
-   if (weaponStrength == (string)"User") {  //assume 0th melee weapon for now
-      str = userStrength;
-   }
-   else {
-      str = stoi(weaponStrength);
-   }
+   int str = weaponStrength;
+
    int tough = enemy.stats_[4];
 
    //Rules for wounds...
@@ -525,10 +531,10 @@ weapons will be used on the enemy.
 Postcondition: Modifies the passed character based on
 the outcome of the ranged attack Lists the results of each
 dice roll to output as well. */
-void Character::rangedAttack(Character& enemy, string stat)
+void Character::rangedAttack(Character& enemy, RangedWeapon* weapon, string stat)
 {
-   combat(enemy, stats_[2], stats_[3], rangedWeapons_[0]->at(4),
-      stoi(rangedWeapons_[0]->at(5)), stoi(rangedWeapons_[0]->at(6)), stat);
+   combat(enemy, stats_[2], stats_[3], weapon->getStrength(),
+     weapon->getAP(), weapon->getDamage(), stat);
 }
 
 /** Performs a melee attack upon an enemy character.
@@ -542,8 +548,47 @@ to the player.
 Postcondition: Modifies the enemy character based on the outcome
 of the attack. Also provides a list of simulated dice rolls to
 the output. */
-void Character::meleeAttack(Character& enemy, string stat)
+void Character::meleeAttack(Character& enemy, MeleeWeapon* weapon, string stat)
 {
-   combat(enemy, stats_[1], stats_[3], melee_[0]->at(1), 
-      stoi(melee_[0]->at(2)), stoi(melee_[0]->at(3)), stat);
+   combat(enemy, stats_[1], stats_[3], weapon->getStrength(), 
+      weapon->getAP(), weapon->getDamage(), stat);
+}
+
+/** Returns the character's strength value.
+
+Precondition: None.
+Postcondition: Returns an int. */
+int Character::getStrength() const
+{
+   return strength_;
+}
+
+/** Returns the specified melee weapon from the weapon list.
+
+If a value greater than the number of weapons is passed, the
+final one is returned.
+
+Precondition: None.
+Postcondition: Returns a MeleeWeapn pointer. */
+MeleeWeapon* Character::getMeleeAt(int index)
+{
+   int retrieve = index;
+   if (index >= (int)meleeList_.size())
+      retrieve = meleeList_.size() - 1;
+   return meleeList_.at(retrieve);
+}
+
+/** Returns the specified ranged weapon from the weapon list.
+
+If a value greater than the number of weapons is passed, the
+final one is returned.
+
+Precondition: None.
+Postcondition: Returns a RangedWeapon pointer. */
+RangedWeapon* Character::getRangedAt(int index)
+{
+   int retrieve = index;
+   if (index >= (int)rangedList_.size())
+      retrieve = rangedList_.size() - 1;
+   return rangedList_.at(retrieve);
 }

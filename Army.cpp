@@ -16,6 +16,7 @@ with slight modifications. */
 Precondition: None.
 Postcondition: Creates an Army object. */
 #include "Army.h"
+#include "Character.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -96,7 +97,7 @@ Army::Army(string fileName)
          getline(characterFile, line);
          if (line.compare("None") != 0) {
             while (line.substr(0, 6).compare("Ranged") == 0) {
-               newChar->setRanged(line.substr(7));
+               newChar->setRangedNew(line.substr(7));
                getline(characterFile, line);
             }
          }
@@ -107,7 +108,7 @@ Army::Army(string fileName)
          //Next is multiple melee weapons...
          if (line.compare("None") != 0) {
             while (line.substr(0, 5).compare("Melee") == 0) {
-               newChar->setMelee(line.substr(6));
+               newChar->setMeleeNew(line.substr(6));
                getline(characterFile, line);
                if (characterFile.eof() || line.compare("") == 0) break;
             }

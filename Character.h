@@ -7,11 +7,11 @@ about a given warhammer character. Considers inherent stats, ranged and
 melee weapons, as well as detailed output to the outstream when
 engaging in combat with other characters. */
 
+#include "MeleeWeapon.h"
+#include "RangedWeapon.h"
 #include <string>
 #include <iostream>
 #include <vector>
-#include "MeleeWeapon.h"
-#include "RangedWeapon.h"
 
 using namespace std;
 
@@ -74,7 +74,7 @@ private:
    a W(ound) stat of 0.
    Postcondition: Outputs dice rolls and combat results to output,
    and changes the W stat of the enemy. */
-   void combat(Character& enemy, int hitStats, int userStrength, string weaponStrength,
+   void combat(Character& enemy, int hitStats, int userStrength, int weaponStrength,
       int weaponAP, int weaponDamage, string stat);
 
    /** Allows for internal modification of the wounds_ attribute, since the Character
@@ -87,6 +87,8 @@ private:
    Postcondition: Subtracts the given amount from the wounds_ data member, until
    it reaches a minimum value of zero. */
    void takeDamage(int damageTaken);
+
+public:
 
    /** Adds a weapon to the collection of ranged weapons. Characters
    may have multiple ranged weapons. Uses the RangedWeapon class.
@@ -115,7 +117,6 @@ private:
    combat. Returns true if succesful. */
    bool setMeleeNew(string input);
 
-public:
    /** Returns the character's movement value (in inches).
    
    Precondition: None.
@@ -340,7 +341,7 @@ public:
    Postcondition: Modifies the passed character based on
    the outcome of the ranged attack Lists the results of each
    dice roll to output as well. */
-   void rangedAttack(Character& enemy, string stat = (string) "BS");
+   void rangedAttack(Character& enemy, RangedWeapon* weapon, string stat = (string) "BS");
 
    /** Performs a melee attack upon an enemy character.
    
@@ -351,7 +352,8 @@ public:
    Postcondition: Modifies the enemy character based on the outcome
    of the attack. Also provides a list of simulated dice rolls to
    the output. */
-   void meleeAttack(Character& enemy, string stat = (string) "WS");
+   void meleeAttack(Character& enemy, MeleeWeapon* weapon, 
+      string stat = (string) "WS");
 
    /** Performs a morale test on the unit.
    
@@ -393,5 +395,21 @@ public:
    other. Otherwise returns false. */
    bool operator>(const Character& other) const;
 
+   /** Returns the specified melee weapon from the weapon list.
    
+   If a value greater than the number of weapons is passed, the
+   final one is returned. 
+   
+   Precondition: None.
+   Postcondition: Returns a MeleeWeapn pointer. */
+   MeleeWeapon* getMeleeAt(int index);
+   
+   /** Returns the specified ranged weapon from the weapon list.
+
+   If a value greater than the number of weapons is passed, the
+   final one is returned.
+
+   Precondition: None.
+   Postcondition: Returns a RangedWeapon pointer. */
+   RangedWeapon* getRangedAt(int index);
 };

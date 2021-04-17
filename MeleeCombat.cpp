@@ -19,6 +19,6 @@ the result of the combat. Returns true if succesful fight. Returns false
 if not - for example, if the health attribute of a character is zero. */
 bool MeleeCombat::fight(Character* attacker, Character* defender)
 {
-   attacker->meleeAttack(*defender);
+   attacker->meleeAttack(*defender, attacker->getMeleeAt(0)); //0th weapon for now...
    return true; //To Do: add way to check for zero health
 }

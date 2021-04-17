@@ -16,8 +16,8 @@ OR
 [N] [S] [AP] [D] [Ab.]
 */
 
-#include <string>
 #include "Character.h"
+#include <string>
 
 using namespace std;
 
@@ -46,7 +46,7 @@ public:
    
    Precondition: None.
    Postcondition: Creates a fully initalized MeleeWeapon object. */
-   MeleeWeapon(Character user, string name, int strength, int ap, int damage, string abilities);
+   MeleeWeapon(int characterStrength, string name, int strength, int ap, int damage, string abilities);
 
    /** Returns the name of the melee weapomn.
    
@@ -78,4 +78,11 @@ public:
    Postcondition: Returns a string, formatted as follows:
    [ability one] [ability two] ... etc. */
    string getAbilities() const;
+
+   /** Displays the weapon characteristics in the order
+   initialized as a string.
+
+   Precondition: None.
+   Postcondition: Returns a string. */
+   string toString() const;
 };

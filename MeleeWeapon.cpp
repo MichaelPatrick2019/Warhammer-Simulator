@@ -15,9 +15,9 @@ OR
 [N] [S] [AP] [D] [Ab.]
 */
 
-#include <string>
-#include "MeleeWeapon.h"
 #include "Character.h"
+#include "MeleeWeapon.h"
+#include <string>
 
 using namespace std;
 
@@ -27,7 +27,7 @@ initialized.
 
 [N][S][AP][D][Ab.]
 
-"Character" is the character that will be using the weapon.
+"characterStrength" is the strength of the Character using the weapon.
 "name" is a string
 "range" is an int
 "type" is a string
@@ -43,11 +43,11 @@ If the strength value passed is -1, the strength value will be taken from
 
 Precondition: None.
 Postcondition: Creates a fully initalized MeleeWeapon object. */
-MeleeWeapon::MeleeWeapon(Character user, string name, int strength, int ap, int damage, string abilities) :
+MeleeWeapon::MeleeWeapon(int characterStrength, string name, int strength, int ap, int damage, string abilities) :
    name_(name), strength_(strength), ap_(ap), damage_(damage), abilities_(abilities)
 {
    if (strength < 0) {
-      strength_ = user.getStrength();
+      strength_ = characterStrength;
    }
 }
 
@@ -95,4 +95,21 @@ Postcondition: Returns a string, formatted as follows:
 string MeleeWeapon::getAbilities() const
 {
    return abilities_;
+}
+
+/** Displays the weapon characteristics in the order
+initialized as a string.
+
+Precondition: None.
+Postcondition: Returns a string. */
+string MeleeWeapon::toString() const
+{
+   string result = "";
+   result += getName() + " ";
+   result += to_string(getStrength()) + " ";
+   result += to_string(getAP()) + " ";
+   result += to_string(getDamage()) + " ";
+   result += getAbilities();
+
+   return result;
 }

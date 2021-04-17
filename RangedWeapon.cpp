@@ -18,13 +18,13 @@ These will all be immutable data members. The values of the initialized
 weapon can not be changed.
 */
 
-#include <string>
 #include "RangedWeapon.h"
+#include <string>
 
 /** Must construct a ranged weapon with the following attributes:
 [N][R][T][A][S][AP][D][Ab.]
 
-"Character" is the character that will be using the weapon.
+"characterStrength" is the strength of the Character using the weapon.
 "name" is a string
 "range" is an int
 "type" is a string
@@ -37,11 +37,11 @@ weapon can not be changed.
 Precondition: None.
 Postcondition: A RangedWeapon object is initialized with the above
 attributes. */
-RangedWeapon::RangedWeapon(Character user, string name, int range, string type, int attacks, int strength,
+RangedWeapon::RangedWeapon(int characterStrength, string name, int range, string type, int attacks, int strength,
    int ap, int damage, string abilities) : name_(name), range_(range), type_(type), attacks_(attacks), 
    strength_(strength), ap_(ap), damage_(damage), abilities_(abilities)
 {
-   if (strength < 0) strength_ = user.getStrength();
+   if (strength < 0) strength_ = characterStrength;
 }
 
 /** Returns the weapon's name.
@@ -115,4 +115,24 @@ Postcondition: Returns a string, formatted as follows:
 string RangedWeapon::getAbilities() const
 {
    return abilities_;
+}
+
+/** Displays the weapon characteristics in the order
+initialized as a string.
+
+Precondition: None.
+Postcondition: Returns a string. */
+string RangedWeapon::toString() const
+{
+   string result = "";
+   result += getName() + " ";
+   result += to_string(getRange()) + " ";
+   result += getType() + " ";
+   result += to_string(getAttacks()) + " ";
+   result += to_string(getStrength()) + " ";
+   result += to_string(getAP()) + " ";
+   result += to_string(getDamage()) + " ";
+   result += getAbilities();
+
+   return result;
 }

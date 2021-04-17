@@ -19,6 +19,6 @@ the result of the combat. Returns true if succesful fight. Returns false
 if not - for example, if the health attribute of a character is zero. */
 bool RangedCombat::fight(Character* attacker, Character* defender)
 {
-   attacker->rangedAttack(*defender);
+   attacker->rangedAttack(*defender, defender->getRangedAt(0));
    return true; //To Do: add way to check for zero health
 }
