@@ -10,6 +10,8 @@ engaging in combat with other characters. */
 #include <string>
 #include <iostream>
 #include <vector>
+#include "MeleeWeapon.h"
+#include "RangedWeapon.h"
 
 using namespace std;
 
@@ -53,6 +55,9 @@ private:
    vector<vector<string>*> melee_; //Also has special keywords that are input as
    //strings
 
+   vector<RangedWeapon*> rangedList_; //Handle 
+   vector<MeleeWeapon*> meleeList_;
+
    /** Private helper function that creates a vector and pushes it
    to the appropriate data field.
    
@@ -82,6 +87,33 @@ private:
    Postcondition: Subtracts the given amount from the wounds_ data member, until
    it reaches a minimum value of zero. */
    void takeDamage(int damageTaken);
+
+   /** Adds a weapon to the collection of ranged weapons. Characters
+   may have multiple ranged weapons. Uses the RangedWeapon class.
+
+   "input" is a string formatted to represent a ranged weapon...
+
+   [Name] [Range] [Type] [number of attacks] [S] [AP] [Abilities]
+
+   Precondition: The input string must adhere to the above format.
+   Postcondition: The ranged weapon is added, and will be used to calculate
+   ranged damage output in combat. Returns true if succesful. */
+   bool setRangedNew(string input);
+
+   /** Adds a melee weapon to the collection of ranged weapons. Characters
+   may have multiple melee weapons they can choose from in melee combat.
+   Accounts for the special case of certain melee weapons that are used to
+   provide additional attacks alongside other melee weapons. Uses MeleeWeapon class.
+
+   "input" is a string formatted to represent a melee weapon.
+
+   [Name] [S] [AP] [D] [Abilities]
+
+   Precondition: The input string must adhere to the above format.
+   Postcondition: The melee weapon is added, and will be referenced when
+   offering players the option of melee weapon they would like to use in
+   combat. Returns true if succesful. */
+   bool setMeleeNew(string input);
 
 public:
    /** Returns the character's movement value (in inches).

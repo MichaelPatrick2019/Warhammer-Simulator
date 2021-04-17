@@ -168,6 +168,74 @@ bool Character::setRanged(string input)
    return setWeapon(input, NUM_RANGED);
 }
 
+/** Adds a weapon to the collection of ranged weapons. Characters
+may have multiple ranged weapons. Uses the RangedWeapon class.
+
+"input" is a string formatted to represent a ranged weapon...
+
+[Name] [Range] [Type] [number of attacks] [S] [AP] [Abilities]
+
+Precondition: The input string must adhere to the above format.
+Postcondition: The ranged weapon is added, and will be used to calculate
+ranged damage output in combat. Returns true if succesful. */
+bool Character::setRangedNew(string input)
+{
+   vector<string>* rangedSplit = split(" ", input);
+
+   string name = rangedSplit->at(0);
+   int range = stoi(rangedSplit->at(1));
+   string type = rangedSplit->at(2);
+   int attacks = stoi(rangedSplit->at(3));
+   int strength = stoi(rangedSplit->at(4));
+   int ap = stoi(rangedSplit->at(5));
+   int damage = stoi(rangedSplit->at(6));
+   string abilities = rangedSplit->at(7);
+
+   RangedWeapon* weapon = new RangedWeapon(*this, name, range, type, attacks, 
+      strength, ap, damage, abilities);
+
+   delete rangedSplit;
+
+   rangedList_.push_back(weapon);
+
+   return true;
+}
+
+/** Adds a melee weapon to the collection of ranged weapons. Characters
+may have multiple melee weapons they can choose from in melee combat.
+Accounts for the special case of certain melee weapons that are used to
+provide additional attacks alongside other melee weapons. Uses MeleeWeapon class.
+
+"input" is a string formatted to represent a melee weapon.
+
+[Name] [S] [AP] [D] [Abilities]
+
+Precondition: The input string must adhere to the above format.
+Postcondition: The melee weapon is added, and will be referenced when
+offering players the option of melee weapon they would like to use in
+combat. Returns true if succesful. */
+bool Character::setMeleeNew(string input)
+{
+   vector<string>* meleeSplit = split(" ", input);
+
+   string name = meleeSplit->at(0);
+   int strength = stoi(meleeSplit->at(1));
+   int ap = stoi(meleeSplit->at(2));
+   int damage = stoi(meleeSplit->at(3));
+   string abilities = meleeSplit->at(4);
+
+   MeleeWeapon* weapon = new MeleeWeapon(*this, name, strength, ap, damage,
+      abilities);
+
+
+   delete meleeSplit;
+
+   meleeList_.push_back(weapon);
+
+   return true;
+
+}
+
 /** Private helper function that creates a vector and pushes it
 to the appropriate data field.
 

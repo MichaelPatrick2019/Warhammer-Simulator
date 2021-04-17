@@ -39,9 +39,6 @@ public:
 
    "Character" is the character that will be using the weapon.
    "name" is a string
-   "range" is an int
-   "type" is a string
-   "attacks" is an int
    "strength" is an int
    "ap" is an int
    "damage" is an int
@@ -49,7 +46,7 @@ public:
    
    Precondition: None.
    Postcondition: Creates a fully initalized MeleeWeapon object. */
-   MeleeWeapon(Character user, int strength, int ap, int damage, string abilities);
+   MeleeWeapon(Character user, string name, int strength, int ap, int damage, string abilities);
 
    /** Returns the name of the melee weapomn.
    
