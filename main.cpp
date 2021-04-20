@@ -48,10 +48,13 @@ Character* getCharacter(Army& army)
 
 int main()
 {
+   bool keepPlaying = true;
+
+
    cout << "Welcome to Warhammer 40k! Your army will be loaded by army.txt";
    cout << endl << endl;
 
-   Army newArmy("army.txt");
+   Army newArmy("characters.txt");
 
    cout << "Here's a list of all the units in the army currently: " << endl << endl;
 
@@ -59,38 +62,61 @@ int main()
 
    cout << endl << "Now that we see who we've got, let's practice some combat." << endl;
 
-   cout << "Please enter the name of the character you'd like to initiate an attack: ";
 
-   Character* attacker = getCharacter(newArmy);
+   while (keepPlaying) {
+      cout << "Please enter the name of the character you'd like to initiate an attack: ";
 
-   cout << "Great - now, enter the name of the character you want to attack: ";
+      Character* attacker = getCharacter(newArmy);
 
-   Character* defender = getCharacter(newArmy);
+      cout << "Great - now, enter the name of the character you want to attack: ";
 
-   while (attacker == defender) {
-      cout << "Please make sure you choose a different character. " << endl << endl;
+      Character* defender = getCharacter(newArmy);
 
-      cout << "The name of the character you want to attack: ";
-      defender = getCharacter(newArmy);
+      while (attacker == defender) {
+         cout << "Please make sure you choose a different character. " << endl << endl;
+
+         cout << "The name of the character you want to attack: ";
+         defender = getCharacter(newArmy);
+      }
+
+      cout << endl;
+
+      cout << "Please enter either 'ranged' or 'melee' to indicate the type of combat you";
+      cout << " would like to occur: ";
+
+      Combat* combatType;
+      string combatInput;
+      CombatFactory factory;
+
+      cin >> combatInput;
+      //Fix crash for bad input...
+
+      combatType = factory.generateCombatObject(combatInput);
+
+      cout << endl << "Combat Begins!" << endl << endl;
+
+      combatType->fight(attacker, defender);
+
+      cout << endl;
+
+      cout << "Keep playing? Y/N: ";
+
+      string answer = "";
+
+      while (answer.compare("") == 0) {
+
+         getline(cin, answer);
+
+         if (answer.compare("N") == 0) {
+            keepPlaying = false;
+         } else {
+            cout << "Please enter either Y or N: ";
+            answer = "";
+         }
+      }
    }
 
-   cout << endl;
 
-   cout << "Please enter either 'ranged' or 'melee' to indicate the type of combat you";
-   cout << " would like to occur: ";
-
-   Combat* combatType;
-   string combatInput;
-   CombatFactory factory;
-
-   cin >> combatInput;
-   combatType = factory.generateCombatObject(combatInput);
-
-   cout << endl << "Combat Begins!" << endl << endl;
-
-   combatType->fight(attacker, defender);
-   
-   cout << endl;
 
 
 

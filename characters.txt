@@ -1,0 +1,59 @@
+Bruce Cunningham
+17 2 5 6 3 15 2 13 3 5
+None
+Ranged Carl 10 Rapid-Fire 9 5 1 1 None 
+Melee Kirsten 8 0 4 None
+
+Michelle Owens
+12 4 3 7 9 10 5 10 4 4
+None
+Ranged Kelvin 12 Assault 6 5 0 3 None 
+Melee Ryan 4 5 3 None
+
+Tess Ross
+12 2 2 5 3 2 3 10 2 5
+None
+Ranged Lana 28 Pistol 4 4 3 5 None 
+Melee Julia 8 5 2 None
+
+Harold Lloyd
+18 5 3 3 2 5 1 17 2 3
+None
+Ranged Lana 2 Assault 9 2 1 3 None 
+Melee Sawyer 3 0 3 None
+
+Lenny Lloyd
+4 2 2 5 3 2 7 15 4 4
+None
+Ranged Catherine 12 Rapid-Fire 12 8 4 3 None 
+Melee Adison 9 0 1 None
+
+Catherine Mason
+8 5 5 9 5 12 7 14 2 5
+None
+Ranged Agata 6 Grenade 9 9 4 4 None 
+Melee Melanie 8 4 3 None
+
+Rubie Moore
+10 2 2 7 4 10 3 19 3 5
+None
+Ranged Ryan 21 Assault 18 7 2 4 None 
+Melee Clark 8 2 4 None
+
+Adelaide Higgins
+4 5 4 2 3 12 4 15 4 4
+None
+Ranged Jenna 8 Assault 12 2 4 2 None 
+Melee Alan 2 2 2 None
+
+Jordan Riley
+8 2 3 9 5 9 1 12 3 4
+None
+Ranged Penelope 8 Grenade 16 3 1 3 None 
+Melee Agata 5 5 4 None
+
+Adam Mason
+12 5 5 2 4 13 1 12 4 3
+None
+Ranged Nicole 37 Rapid-Fire 9 7 5 3 None 
+Melee Jordan User 5 4 None
